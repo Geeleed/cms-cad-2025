@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.BASE_URL;
 
 export const apiPath = {
   page: {
