@@ -1,6 +1,4 @@
-import {
-  ButtonSecondarySmall,
-} from "@/components/Buttons";
+import { ButtonSecondarySmall } from "@/components/Buttons";
 import FadeInWrapper from "@/components/FadeInWrapper";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +10,7 @@ export default function Doctor() {
       <FadeInWrapper>
         <div className="card relative drop-shadow-2xl">
           <div>
-            <p>
+            <p className="max-[450px]:line-clamp-6">
               Dr. Songpoom serves as a consultant and partner psychiatrist at
               the CAD Center, offering expert guidance and support in the field
               of psychiatry. He has been a dedicated psychiatrist at multiple
@@ -27,7 +25,7 @@ export default function Doctor() {
               </ButtonSecondarySmall>
             </Link>
           </div>
-          <div className="image">
+          <div className="image max-[769px]:hidden">
             <Image
               src={"/statics/images/team/หมอ ทรงภูมิ.jpg"}
               width={500}

@@ -11,7 +11,11 @@ import React from "react";
 export default function Approaches() {
   return (
     <section className="section-approaches">
-      <h2>Our Teaching Approaches</h2>
+      <div className="flex justify-center text-center">
+        <FadeInWrapper delay={100}>
+          <h2>Our Teaching Approaches</h2>
+        </FadeInWrapper>
+      </div>
       {/* <div className="flex justify-center bg-(--a22) max-w-[1250px] w-full mx-auto rounded-[40px]"> */}
       <div className="card-container">
         <CardApproaches

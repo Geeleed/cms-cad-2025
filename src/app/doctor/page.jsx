@@ -21,7 +21,7 @@ export default async function Page() {
   const contact = d.child.find((el) => el.label === "contact");
   return (
     <div className="page-doctor">
-      <div className="max-w-[1250px] mx-auto flex flex-col">
+      <div className="max-w-[1250px] mx-auto flex flex-col px-[2rem]">
         <div className="mt-[8rem]">
           <FadeInWrapper>
             <h1>{d.content}</h1>
@@ -41,10 +41,10 @@ export default async function Page() {
           </div>
         </FadeInWrapper>
 
-        <div className="max-w-[800px] grid gap-12 my-12">
+        <div className="max-w-[800px] grid gap-12 my-12 max-[450px]:my-6">
           <FadeInWrapper>
-            <section className="grid grid-cols-4 gap-4">
-              <figure className="w-full aspect-square overflow-hidden rounded-4xl">
+            <section className="grid grid-cols-4 gap-4 max-[450px]:grid-cols-1 max-[450px]:gap-x-0">
+              <figure className="w-full aspect-square overflow-hidden rounded-4xl max-[450px]:max-w-[200px] max-[450px]:mx-auto max-[450px]:hidden">
                 <Image
                   src={src_image_doctor}
                   width={400}
@@ -108,12 +108,12 @@ export default async function Page() {
             <FadeInWrapper>
               <h2>{service_fee.content}</h2>
             </FadeInWrapper>
-            <div className="pl-2">
+            <div className="pl-2 max-[450px]:pl-0">
               {service_fee.child.map((el) => (
                 <FadeInWrapper key={el.id}>
-                  <div className="flex justify-between hover:bg-(--c11) px-4 py-2 rounded-4xl transform-all">
-                    <p>{el.content.name}</p>
-                    <p>
+                  <div className="flex justify-between hover:bg-(--c11) px-4 max-[450px]:px-0 py-2 rounded-4xl transform-all">
+                    <p className="max-[450px]:w-1/2">{el.content.name}</p>
+                    <p className="max-[450px]:w-1/2 max-[450px]:text-right">
                       {el.content.price.min !== el.content.price.max
                         ? `${el.content.price.min} - ${el.content.price.max} ${el.content.price.currency}`
                         : `${
@@ -130,12 +130,12 @@ export default async function Page() {
             <FadeInWrapper>
               <h2>{courses.content}</h2>
             </FadeInWrapper>
-            <div className="pl-2">
+            <div className="pl-2 max-[450px]:pl-0">
               {courses.child.map((el) => (
                 <FadeInWrapper key={el.id}>
-                  <div className="flex justify-between hover:bg-(--c11) px-4 py-2 rounded-4xl transform-all">
-                    <p>{el.content.name}</p>
-                    <p>
+                  <div className="flex justify-between hover:bg-(--c11) px-4 max-[450px]:px-0 py-2 rounded-4xl transform-all">
+                    <p className="max-[450px]:w-1/2">{el.content.name}</p>
+                    <p className="max-[450px]:w-1/2 text-right">
                       {el.content.price.min !== el.content.price.max
                         ? `${el.content.price.min} - ${el.content.price.max} ${el.content.price.currency}`
                         : `${
@@ -152,7 +152,7 @@ export default async function Page() {
             <FadeInWrapper>
               <h2>{faq.content}</h2>
             </FadeInWrapper>
-            <div className="pl-6">
+            <div className="pl-6 max-[450px]:pl-0">
               {faq.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <details className="mb-4">
@@ -168,7 +168,30 @@ export default async function Page() {
             </div>
           </section>
 
-          <section className="card">
+          <section className="card max-[450px]:hidden">
+            <FadeInWrapper>
+              <h2>{contact.content}</h2>
+            </FadeInWrapper>
+            <div>
+              {contact.child.map((el) => (
+                <FadeInWrapper key={el.id}>
+                  <div className="flex gap-2 hover:underline underline-offset-8 hover:text-(--c) w-fit transition-all duration-300">
+                    <p className="font-semibold mb-4">
+                      {el.content.contact_type}:
+                    </p>
+                    <Link
+                      href={el.content.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {el.content.contact}
+                    </Link>
+                  </div>
+                </FadeInWrapper>
+              ))}
+            </div>
+          </section>
+          <section className="max-[450px]:block hidden">
             <FadeInWrapper>
               <h2>{contact.content}</h2>
             </FadeInWrapper>

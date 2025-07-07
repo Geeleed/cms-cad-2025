@@ -22,5 +22,8 @@ export const getDoctor = async () =>
 export const getService = async () =>
   await fetchGetJson({ url: apiPath.page.service });
 
-export const getVideo = async () =>
-  await fetchGetJson({ url: apiPath.resource.video });
+export const getVideo = async ({ revalidate = 60 }) =>
+  await fetchGetJson({
+    url: apiPath.resource.video,
+    nextOptions: { revalidate },
+  });

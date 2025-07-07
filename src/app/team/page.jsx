@@ -7,8 +7,8 @@ export default async function page() {
   const team = await getTeam();
   const d = team.en;
   return (
-    <div className="flex">
-      <div className="max-w-[1250px] mx-auto">
+    <div className="page-team flex">
+      <div className="max-w-[1250px] mx-auto px-[2rem]">
         <FadeInWrapper>
           <div className="mt-[8rem] mb-[1rem]">
             <h1>{d.content}</h1>

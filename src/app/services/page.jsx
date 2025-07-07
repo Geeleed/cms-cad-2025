@@ -8,8 +8,8 @@ export default async function Page() {
   const service = await getService();
   const d = service.en;
   return (
-    <div>
-      <div className="max-w-[1250px] mx-auto">
+    <div className="page-services">
+      <div className="max-w-[1250px] mx-auto px-[2rem]">
         <div className="mt-[8rem] mb-[1rem]">
           <FadeInWrapper>
             <h1>{d.content}</h1>

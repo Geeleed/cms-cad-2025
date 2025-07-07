@@ -55,7 +55,7 @@ export default function Contact() {
           </p>
           <div className="mt-[3rem]">
             <div className="font-semibold">Navigation</div>
-            <div className="flex gap-3 *:text-[0.9rem] *:hover:text-(--d)">
+            <div className="flex gap-x-3 *:text-[0.9rem] *:hover:text-(--d) flex-wrap">
               <Link href={"/home"}>Home</Link>
               <Link href={"/about"}>About</Link>
               <Link href={"/team"}>Team</Link>

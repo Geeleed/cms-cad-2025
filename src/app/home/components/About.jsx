@@ -34,7 +34,7 @@ export default function About() {
         </div>
       </FadeInWrapper>
       <div className="flex justify-center">
-        <div className="flex gap-[16px]">
+        <div className="flex gap-[16px] flex-wrap justify-center">
           <FadeInWrapper delay={300}>
             <div hidden className="card card-about">
               <div className="image">

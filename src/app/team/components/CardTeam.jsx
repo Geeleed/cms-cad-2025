@@ -12,19 +12,21 @@ export default function CardTeam({ data }) {
     data.child.find((el) => el.content === "Education Background");
   return (
     <FadeInWrapper>
-      <div className="grid grid-cols-3 gap-8 mb-[10rem]">
-        <div className="col-span-1">
-          <figure className="w-full aspect-square overflow-hidden rounded-2xl">
+      <div className="card-team">
+        <div className="col-span-1 max-[769px]:text-center max-[769px]:flex max-[769px]:flex-col max-[769px]:justify-center">
+          <figure className="w-full aspect-square overflow-hidden rounded-2xl max-[769px]:max-w-[320px] max-[769px]:mx-auto">
             <Image src={src_image} height={500} width={500} alt={name} />
           </figure>
-          <p
-            className="font-bold text-[2rem] mt-4"
-            style={{ fontSize: "1.4rem" }}
-          >
-            {name}
-          </p>
-          <p style={{ fontSize: "1rem" }}>{role}</p>
-          <p style={{ fontSize: "1rem" }}>{position}</p>
+          <div className="max-[769px]:mx-auto max-[769px]:mb-[2rem]">
+            <p
+              className="font-bold text-[2rem] mt-4"
+              style={{ fontSize: "1.4rem" }}
+            >
+              {name}
+            </p>
+            <p style={{ fontSize: "1rem" }}>{role}</p>
+            <p style={{ fontSize: "1rem" }}>{position}</p>
+          </div>
         </div>
         <div className="col-span-2">
           <h2>{content_highlights}</h2>

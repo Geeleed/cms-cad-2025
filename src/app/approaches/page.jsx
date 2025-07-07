@@ -83,26 +83,31 @@ export default async function page() {
           </ul>
         </ContainerSection>
 
+        {/* table */}
         <FadeInWrapper>
-          <div className="border border-(--neutral-300)">
-            <div className="grid grid-cols-4 font-bold text-center py-2 bg-(--a22)">
-              {table.content_table.header.map((el) => (
-                <div key={el.id}>{el.content}</div>
-              ))}
-            </div>
-            <div>
-              {table.content_table.body.map((el, index) => (
-                <div key={index} className="grid grid-cols-4">
-                  {el.child.map((el2) => (
-                    <div
-                      key={el2.id}
-                      className="p-4 border border-(--neutral-300)"
-                    >
-                      {el2.content}
+          <div className="w-full overflow-auto">
+            <div className="min-w-[1000px]">
+              <div className="border border-(--neutral-300)">
+                <div className="grid grid-cols-4 font-bold text-center py-2 bg-(--a22)">
+                  {table.content_table.header.map((el) => (
+                    <div key={el.id}>{el.content}</div>
+                  ))}
+                </div>
+                <div>
+                  {table.content_table.body.map((el, index) => (
+                    <div key={index} className="grid grid-cols-4">
+                      {el.child.map((el2) => (
+                        <div
+                          key={el2.id}
+                          className="p-4 border border-(--neutral-300)"
+                        >
+                          {el2.content}
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </FadeInWrapper>

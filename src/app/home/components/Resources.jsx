@@ -11,7 +11,7 @@ export default function Resources() {
       <div className="max-w-[1250px] w-full">
         <div>
           <h3>Articles</h3>
-          <div className="flex justify-center gap-[20px]">
+          <div className="flex justify-center gap-[20px] max-[1025px]:grid max-[1025px]:grid-cols-2 max-[769px]:grid-cols-1">
             <CardArticle
               title={
                 "Early, Intensive ABA Therapy: An Investment in Your Child's Future"
@@ -51,7 +51,7 @@ export default function Resources() {
         </div>
         <div>
           <h3>Educational Videos</h3>
-          <div className="grid grid-cols-3 justify-items-center">
+          <div className="grid grid-cols-3 justify-items-center max-[1025px]:grid-cols-2 max-[769px]:grid-cols-1 max-[769px]:gap-[2rem]">
             <CardVideo
               title={
                 "ทำไมการยื้อแย่งแกล้งงงถึงไม่ได้ผลเวลาสอนเด็กออทิสติกให้พูด?"

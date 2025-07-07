@@ -32,7 +32,7 @@ export default function News() {
       <div className="flex justify-center">
         <h2>News</h2>
       </div>
-      <div className="content">
+      <div className="grid grid-cols-3 max-[1025px]:grid-cols-2 max-[769px]:grid-cols-1 gap-4 max-w-[1250px] mx-auto">
         {news.map((el, index) => (
           <CardNews
             key={index}
