@@ -411,10 +411,10 @@ li {
       }
     }
   }
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 450px) {
     .left {
       width: 100dvw;
-      padding: 4rem 0;
+      padding: 6rem 0;
       > div {
         width: 100%;
         max-width: unset;
