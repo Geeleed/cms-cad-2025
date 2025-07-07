@@ -18,7 +18,7 @@ export default function Video() {
   return (
     <div>
       <h2>{educational_videos}</h2>
-      <div className="grid grid-cols-3 mb-[4rem] gap-1">
+      <div className="grid grid-cols-3 mb-[4rem] gap-4 max-[770px]:grid-cols-2 max-[450px]:grid-cols-1">
         {(v?.child || []).map((el) => (
           <FadeInWrapper key={el.id}>
             <CardVideo title={el.content.title} embedSrc={el.content.src} />
