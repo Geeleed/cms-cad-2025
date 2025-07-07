@@ -9,7 +9,6 @@ export default function Video() {
   const [educational_videos, setEducational_videos] = useState();
   const setVideo = async () =>
     await getVideo().then((r) => {
-        console.log({r})
       setV(r);
       setEducational_videos(r?.content?.en || "");
     });
@@ -29,4 +28,3 @@ export default function Video() {
     </div>
   );
 }
-
