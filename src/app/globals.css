@@ -114,6 +114,7 @@ html {
 body {
   color: var(--text);
   font-size: 18px;
+  font-family: "Prompt", "IBM Plex Sans", Arial, sans-serif;
 }
 
 h1 {
@@ -1274,4 +1275,14 @@ footer {
 
 .page-resources {
   padding: 0 2rem;
+}
+
+.editor-content {
+  ::selection {
+    background-color: var(--c);
+  }
+  > div {
+    padding: 1rem;
+    height: fit-content;
+  }
 }

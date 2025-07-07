@@ -53,6 +53,14 @@ export default function RootLayout({ children }) {
       {/* <html lang="en" className={ibm.className}> */}
       <head>
         <title>Center for Autism Development (CAD)</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Kanit&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Prompt&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-[100dvw] overflow-x-hidden`}
