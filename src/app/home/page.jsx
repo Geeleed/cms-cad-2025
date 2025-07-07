@@ -14,7 +14,7 @@ import Team from "./components/Team";
 
 export default function page() {
   return (
-    <div>
+    <div className="page-home">
       <Home />
       {/* <div className="solid-circle-c right-0 opacity-10 size-[500px] translate-x-[200px] translate-y-[100px] animate-up-down" /> */}
       <CardBasicInfo />

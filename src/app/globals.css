@@ -1141,6 +1141,9 @@ footer {
 }
 .decoration-cad {
   position: absolute;
+  @media screen and (max-width: 400px) {
+    display: none;
+  }
 }
 
 .container-page-team {
