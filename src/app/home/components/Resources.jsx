@@ -1,8 +1,32 @@
+"use client";
+import { getArticle } from "@/api/fetcher";
 import FadeInWrapper from "@/components/FadeInWrapper";
+import { convertHtmlToText } from "@/utils/pure_function";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Resources() {
+  const [article, setArticle] = useState([]);
+  const init = async () => {
+    const article = await getArticle();
+    const temp = [];
+    const num = article.length > 3 ? 3 : article.length;
+    for (let i = 0; i < num; i++) {
+      const element = article[i];
+      const content = element.content;
+      const text = convertHtmlToText(content);
+      temp.push({
+        title: element.title,
+        detail: text,
+        id_article: element.id_article,
+        content: element.content,
+      });
+    }
+    setArticle(temp);
+  };
+  useEffect(() => {
+    init();
+  }, []);
   return (
     <section className="section-resources">
       <div className="flex justify-center">
@@ -11,8 +35,16 @@ export default function Resources() {
       <div className="max-w-[1250px] w-full">
         <div>
           <h3>Articles</h3>
-          <div className="flex justify-center gap-[20px] max-[1025px]:grid max-[1025px]:grid-cols-2 max-[769px]:grid-cols-1">
-            <CardArticle
+          <div className="flex justify-center gap-[20px] max-[1025px]:grid max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1">
+            {article.map((el) => (
+              <CardArticle
+                key={el.id_article}
+                title={el.title}
+                detail={el.detail}
+                href={`/resources/article/${el.id_article}`}
+              />
+            ))}
+            {/* <CardArticle
               title={
                 "Early, Intensive ABA Therapy: An Investment in Your Child's Future"
               }
@@ -35,7 +67,7 @@ export default function Resources() {
               detail={
                 "You know your child best: You see their strengths, challenges, and daily life routines in ways professionals can't. Sharing this info helps create tailored therapy plans that truly fit their needs."
               }
-            />
+            /> */}
             {/* <CardArticle
               title={
                 "เปลี่ยนชีวิตเด็กออทิสติกด้วยการพัฒนาพฤติกรรมทางสังคมตั้งแต่วัยแรกเริ่ม! (Early social behaviors)"
@@ -51,7 +83,7 @@ export default function Resources() {
         </div>
         <div>
           <h3>Educational Videos</h3>
-          <div className="grid grid-cols-3 justify-items-center max-[1025px]:grid-cols-2 max-[769px]:grid-cols-1 max-[769px]:gap-[2rem]">
+          <div className="grid grid-cols-3 gap-[1rem] justify-items-center max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 max-[821px]:gap-[2rem]">
             <CardVideo
               title={
                 "ทำไมการยื้อแย่งแกล้งงงถึงไม่ได้ผลเวลาสอนเด็กออทิสติกให้พูด?"

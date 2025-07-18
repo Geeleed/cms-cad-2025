@@ -13,5 +13,6 @@ export const apiPath = {
   },
   resource: {
     video: `${BASE_URL}/resource/video`,
+    article: `${BASE_URL}/resource/article`,
   },
 };

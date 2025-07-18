@@ -18,10 +18,10 @@ export default function Team() {
     loop: true,
     slides: { perView: 3, spacing: 62 },
     breakpoints: {
-      "(max-width: 1024px)": {
+      "(max-width: 1180px)": {
         slides: { perView: 2, spacing: 40 },
       },
-      "(max-width: 768px)": {
+      "(max-width: 820px)": {
         slides: { perView: 1, spacing: 20 },
       },
     },
@@ -45,11 +45,16 @@ export default function Team() {
 
   const teamData = [
     {
+      name: "Dita Chapman",
+      role: "Advisor",
+      detail: "Board Certified Behavior Analyst (BCBA)",
+      img: "/statics/images/team/dita.jpg",
+    },
+    {
       name: "Prapanit Prapanont (Aum)",
       role: "Founder and Director",
       detail: "Board Certified Behavior Analyst (BCBA)",
       img: "/statics/images/team/ครูอุ๋ม ประภานิช.jpg",
-      link: "#",
     },
     {
       name: "Songpoom Benyakorn, M.D., Asst. Prof.",

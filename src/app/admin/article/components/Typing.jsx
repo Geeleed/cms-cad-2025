@@ -221,7 +221,7 @@ export default function BlogEditor() {
             background: "#fff",
           }}
         >
-          <EditorContent editor={editor} className="editor-content"/>
+          <EditorContent editor={editor} className="editor-content" />
         </div>
       </Content>
 

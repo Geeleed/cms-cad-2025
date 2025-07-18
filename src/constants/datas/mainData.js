@@ -151,7 +151,7 @@ const MAIN_DATA_TH = {
           position: "",
           optional: "Child and Adolescent Psychiatrist",
           highlights: [
-            "Dr. Songpoom serves as a consultant and partner psychiatrist at the CAD Center, offering expert guidance and support in the field of psychiatry. He has been a dedicated psychiatrist at multiple hospitals and is an entrepreneur with his own clinic Sunshine Mind Clinic. Dr. Songpoom has an extensive background in child and adolescent psychiatry, with significant roles in both academia and clinical practice. He has served as Assistant Dean at Srinakharinwirot University, focusing on administration and human resources. His education includes a postdoctoral fellowship in ADHD at the University of California, Davis, and a residency in psychiatry at Chulalongkorn University. His contributions to the field are recognized through numerous awards, publications, and international presentations.",
+            "Dr. Songpoom serves as a consultant and partner psychiatrist at the CAD Center, offering expert guidance and support in the field of psychiatry. He has been a dedicated psychiatrist at multiple hospitals and is an entrepreneur with his own clinic Sunshine Mind Clinic. Dr. Songpoom has an extensive background in child and adolescent psychiatry, with significant roles in both academic and clinical practice. He has served as Assistant Dean at Srinakharinwirot University, focusing on administration and human resources. His education includes a postdoctoral fellowship in ADHD at the University of California, Davis, and a residency in psychiatry at Chulalongkorn University. His contributions to the field are recognized through numerous awards, publications, and international presentations.",
           ],
           professional_credentials: [
             "Dr. Songpoom has held significant management positions at Srinakharinwirot University, serving as the Assistant Dean of Administration from 2018 to 2019 and the Assistant Dean of Human Resources from 2017 to 2018. In these roles, he contributed to the administrative and human resource functions of the School of Medicine. Alongside his administrative duties, Dr. Songpoom has been a dedicated Child and Adolescent Psychiatrist at the same institution since 2011. He also has extensive experience in clinical practice at various hospitals and runs his own clinic, Sunshine Mind Clinic. His contributions to the field are further highlighted by his numerous publications and active participation in both national and international conferences.",
@@ -263,7 +263,7 @@ const MAIN_DATA_TH = {
         {
           title: "Parent Training",
           body: [
-            "Offers training for parents on essential techniques for supporting children outside the classroom, such as promoting communication, managing undesirable behaviors, and fostering overall developmental progress. The parent training consists of 8 hours per month and is included in the early intensive classroom program.",
+            "Offers training for parents on essential techniques for supporting children outside the classroom, such as promoting communication, managing undesirable behaviors, and fostering overall developmental progress. The parent training consists of 4 hours per month and is included in the early intensive classroom program.",
             "Provides a summary report on each child’s progress and holds a parent meeting to update on developmental progress.",
           ],
         },
@@ -280,7 +280,7 @@ const MAIN_DATA_TH = {
       section_name: "doctors",
       title: "Meet Our Doctors",
       body: [
-        "Dr. Songpoom serves as a consultant and partner psychiatrist at the CAD Center, offering expert guidance and support in the field of psychiatry. He has been a dedicated psychiatrist at multiple hospitals and is an entrepreneur with his own clinic Sunshine Mind Clinic. Dr. Songpoom has an extensive background in child and adolescent psychiatry, with significant roles in both academia and clinical practice.",
+        "Dr. Songpoom serves as a consultant and partner psychiatrist at the CAD Center, offering expert guidance and support in the field of psychiatry. He has been a dedicated psychiatrist at multiple hospitals and is an entrepreneur with his own clinic Sunshine Mind Clinic. Dr. Songpoom has an extensive background in child and adolescent psychiatry, with significant roles in both academic and clinical practice.",
       ],
       content: [
         {

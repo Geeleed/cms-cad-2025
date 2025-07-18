@@ -14,7 +14,7 @@ export default function Navbar() {
         className="bg-white w-full drop-shadow-(--main-drop-shadow) max-[769px]:px-8"
         id="nav"
       >
-        <div className="max-w-[1250px] w-full mx-auto flex items-center justify-between py-[28px] min-[1024px]:px-[28px] min-[1440px]:px-0">
+        <div className="max-w-[1250px] w-full mx-auto flex items-center justify-between py-[28px] min-[1024px]:px-[28px] min-[1440px]:px-0 min-[700px]:px-[2rem]">
           <div>
             <Image
               src={"/statics/svgs/logo.svg"}
@@ -23,7 +23,7 @@ export default function Navbar() {
               alt="logo"
             />
           </div>
-          <div className="flex justify-center items-center gap-[10px] min-[1024px]:justify-end max-[1300px]:hidden">
+          <div className="flex justify-center items-center gap-[10px] min-[1024px]:justify-end max-[1440px]:hidden">
             <div className="flex justify-center items-center gap-[10px] flex-wrap min-[1024px]:w-1/2 min-[1440px]:w-full">
               <Link className="nav-link" href={"/home"}>
                 Home
@@ -55,11 +55,11 @@ export default function Navbar() {
               Contact
             </Link>
           </div>
-          <div className="max-[1300px]:flex hidden items-center gap-8">
+          <div className="max-[1440px]:flex hidden items-center gap-8">
             <Link className="button-primary" href={"#contact"}>
               Contact
             </Link>
-            <div onClick={() => setIsOpenNavPage(true)} className="scale-[2]">
+            <div onClick={() => setIsOpenNavPage(true)} className="scale-[2] -translate-x-2">
               <IconList />
             </div>
           </div>

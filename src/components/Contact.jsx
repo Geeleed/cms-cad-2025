@@ -63,6 +63,7 @@ export default function Contact() {
               <Link href={"/doctor"}>Doctor</Link>
               <Link href={"/approaches"}>Approaches</Link>
               <Link href={"/resources"}>Resources</Link>
+              <Link href={"/admin/article/editor"}>Editor</Link>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React from "react";
 // import CardVideo from "./components/CardVideo";
 import Video from "./use_client/Video";
+import Article from "./use_client/Article";
 
 export default async function Page() {
   // const v = await getVideoWithRevalidate({ revalidate: 360 });
@@ -23,6 +24,9 @@ export default async function Page() {
             ))}
           </div>
         </section> */}
+        <section>
+          <Article />
+        </section>
         <section>
           <Video />
         </section>

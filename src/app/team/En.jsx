@@ -98,7 +98,7 @@ export default function En() {
                 multiple hospitals and is an entrepreneur with his own clinic
                 Sunshine Mind Clinic. Dr. Songpoom has an extensive background
                 in child and adolescent psychiatry, with significant roles in
-                both academia and clinical practice. He has served as Assistant
+                both academic and clinical practice. He has served as Assistant
                 Dean at Srinakharinwirot University, focusing on administration
                 and human resources. His education includes a postdoctoral
                 fellowship in ADHD at the University of California, Davis, and a

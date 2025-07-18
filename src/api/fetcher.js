@@ -1,4 +1,4 @@
-import { fetchGetJson } from "@/utils/pure_function";
+import { fetchGetJson, fetchPostJson } from "@/utils/pure_function";
 import { apiPath } from "./path";
 
 export const getTeam = async () =>
@@ -24,6 +24,15 @@ export const getService = async () =>
 
 export const getVideo = async () =>
   await fetchGetJson({ url: apiPath.resource.video });
+
+export const getArticle = async () =>
+  await fetchGetJson({ url: apiPath.resource.article });
+
+export const getArticleWithIdArticle = async (id_article) =>
+  await fetchGetJson({ url: `${apiPath.resource.article}/${id_article}` });
+
+export const postArticle = async (payload) =>
+  await fetchPostJson({ url: apiPath.resource.article, payload });
 
 export const getVideoWithRevalidate = async ({ revalidate = 60 }) =>
   await fetchGetJson({

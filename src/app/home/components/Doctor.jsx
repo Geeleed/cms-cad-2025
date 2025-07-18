@@ -16,7 +16,7 @@ export default function Doctor() {
               of psychiatry. He has been a dedicated psychiatrist at multiple
               hospitals and is an entrepreneur with his own clinic Sunshine Mind
               Clinic. Dr. Songpoom has an extensive background in child and
-              adolescent psychiatry, with significant roles in both academia and
+              adolescent psychiatry, with significant roles in both academic and
               clinical practice.
             </p>
             <Link href={"/doctor"}>
