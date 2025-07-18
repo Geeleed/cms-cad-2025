@@ -28,6 +28,8 @@ export const getVideo = async () =>
 export const getArticle = async () =>
   await fetchGetJson({ url: apiPath.resource.article });
 
+export const getNews = async () => await fetchGetJson({ url: apiPath.news });
+
 export const getArticleWithIdArticle = async (id_article) =>
   await fetchGetJson({ url: `${apiPath.resource.article}/${id_article}` });
 

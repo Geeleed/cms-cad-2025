@@ -1,39 +1,16 @@
+import { getNews } from "@/api/fetcher";
 import Link from "next/link";
 import React from "react";
 
-const news = [
-  {
-    imgSrc: "https://www.matichon.co.th/wp-content/uploads/2025/06/11-20.jpg",
-    title:
-      "CAD CENTER จับมือ SUNSHINE MIND CLINIC ร่วมรักษาและบำบัดเด็กออทิสติกโดยจิตแพทย์เด็ก",
-    date: "วันที่ 5 มิถุนายน 2568 - 15:13 น.",
-    href: "https://www.matichon.co.th/publicize/news_5216216",
-  },
-  {
-    imgSrc: "https://static.naewna.com/uploads/news/source/891857.jpg",
-    title:
-      "บำบัดเด็ก‘ออทิสติก’โดยสหวิชาชีพ ทำตั้งแต่‘อายุน้อย-ต่อเนื่อง’เสริมพฤติกรรมเชิงบวก",
-    date: "วันจันทร์ ที่ 16 มิถุนายน พ.ศ. 2568, 06.00 น.",
-    href: "https://www.naewna.com/local/891857",
-  },
-  {
-    imgSrc:
-      "https://www.matichon.co.th/wp-content/uploads/2025/05/01-56-728x486.jpg",
-    title:
-      "ศูนย์พัฒนาเด็ก CAD CENTER จับมือจิตแพทย์เด็กผนึกทีมสหวิชาชีพร่วมบำบัดเด็กออทิสติก",
-    date: "วันที่ 13 พฤษภาคม 2568 - 15:14 น.",
-    href: "https://www.matichon.co.th/publicize/news_5180557",
-  },
-];
-
-export default function News() {
+export default async function News() {
+  const news = await getNews();
   return (
-    <section className="section-news" id="news">
+    <section className="section-news">
       <div className="flex justify-center">
         <h2>News</h2>
       </div>
       <div className="grid grid-cols-3 max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 gap-4 max-w-[1250px] mx-auto">
-        {news.map((el, index) => (
+        {(news || []).slice(0,3).map((el, index) => (
           <CardNews
             key={index}
             imgSrc={el.imgSrc}
@@ -42,6 +19,11 @@ export default function News() {
             href={el.href}
           />
         ))}
+      </div>
+      <div className="flex justify-center my-[20px]">
+        <Link className="text-(--d) underline" href={"/news"}>
+          More News...
+        </Link>
       </div>
     </section>
   );

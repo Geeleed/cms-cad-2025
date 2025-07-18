@@ -1,9 +1,7 @@
 "use client";
-import { Button } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { ButtonPrimaryMedium, NavLink } from "./Buttons";
 import IconList from "./icons/IconList";
 
 export default function Navbar() {
@@ -15,14 +13,14 @@ export default function Navbar() {
         id="nav"
       >
         <div className="max-w-[1250px] w-full mx-auto flex items-center justify-between py-[28px] min-[1024px]:px-[28px] min-[1440px]:px-0 min-[700px]:px-[2rem]">
-          <div>
+          <Link href={"/home"}>
             <Image
               src={"/statics/svgs/logo.svg"}
-              width={100}
-              height={100}
+              width={140}
+              height={140}
               alt="logo"
             />
-          </div>
+          </Link>
           <div className="flex justify-center items-center gap-[10px] min-[1024px]:justify-end max-[1440px]:hidden">
             <div className="flex justify-center items-center gap-[10px] flex-wrap min-[1024px]:w-1/2 min-[1440px]:w-full">
               <Link className="nav-link" href={"/home"}>
@@ -46,7 +44,7 @@ export default function Navbar() {
               <Link className="nav-link" href={"/resources"}>
                 Resources
               </Link>
-              <Link className="nav-link" href={"/home#news"}>
+              <Link className="nav-link" href={"/news"}>
                 News
               </Link>
               {/* <Link className="nav-link" href={"/events"}>Events</Link> */}
@@ -59,7 +57,10 @@ export default function Navbar() {
             <Link className="button-primary" href={"#contact"}>
               Contact
             </Link>
-            <div onClick={() => setIsOpenNavPage(true)} className="scale-[2] -translate-x-2">
+            <div
+              onClick={() => setIsOpenNavPage(true)}
+              className="scale-[2] -translate-x-2"
+            >
               <IconList />
             </div>
           </div>
@@ -91,7 +92,7 @@ export default function Navbar() {
         <Link className="nav-link" href={"/resources"}>
           Resources
         </Link>
-        <Link className="nav-link" href={"/home#news"}>
+        <Link className="nav-link" href={"/news"}>
           News
         </Link>
       </div>
