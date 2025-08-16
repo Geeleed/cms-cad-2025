@@ -461,6 +461,7 @@ li {
   left: 50%;
   transform: translate(-50%, -50%);
   width: max-content;
+  max-width: 1200px;
 }
 
 .section-how {
@@ -1384,4 +1385,26 @@ footer {
 
 .page-news {
   margin-bottom: 5rem;
+}
+
+.group-button-switch-locale {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--c);
+  border-radius: 4px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  button {
+    padding: 4px;
+    cursor: pointer;
+  }
+}
+.local-active {
+  background-color: var(--c);
+  color: white;
+}
+
+.content-block{
+  width: 100%;
 }

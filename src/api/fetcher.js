@@ -41,3 +41,8 @@ export const getVideoWithRevalidate = async ({ revalidate = 60 }) =>
     url: apiPath.resource.video,
     nextOptions: { revalidate },
   });
+
+export const fetchData = async (payload) => {
+  const result = await fetchPostJson({ url: apiPath.data, payload });
+  return result;
+};

@@ -16,4 +16,7 @@ export const apiPath = {
     article: `${BASE_URL}/resource/article`,
   },
   news: `${BASE_URL}/news`,
+  data: `${BASE_URL}/data`,
+  data_landing: `${BASE_URL}/data/landing`,
+  data_footer: `${BASE_URL}/data/footer`,
 };
