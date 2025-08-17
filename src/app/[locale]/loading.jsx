@@ -15,7 +15,6 @@ export default function Loading() {
         left: 0,
         zIndex: 1,
         backgroundColor: "white",
-        // backdropFilter: "blur(10px)",
       }}
     >
       <div
