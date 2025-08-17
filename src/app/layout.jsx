@@ -8,7 +8,7 @@ import { CssBaseline } from "@mui/material";
 import { Prompt } from "next/font/google";
 import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import Link from "next/link";
 import IconUp from "@/components/icons/IconUp";
 // import "./styles.css";
@@ -78,7 +78,7 @@ export default function RootLayout({ children }) {
               >
                 <IconUp />
               </Link>
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </ThemeProvider>
         </AppRouterCacheProvider>

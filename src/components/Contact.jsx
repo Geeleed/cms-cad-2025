@@ -1,4 +1,3 @@
-"use client";
 import IconCall from "@/components/icons/IconCall";
 import IconFacebook from "@/components/icons/IconFacebook";
 import IconLine from "@/components/icons/IconLine";
@@ -93,9 +92,9 @@ export default function Contact({
                 {dictionary.approaches}
               </Link>
               <Link href={`/${locale}/resources`}>{dictionary.resources}</Link>
-              <Link href={`/${locale}/admin/article/editor`}>
+              {/* <Link href={`/${locale}/admin/article/editor`}>
                 {dictionary.editor}
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

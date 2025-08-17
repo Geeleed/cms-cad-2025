@@ -5,7 +5,7 @@ import { CardArticle } from "../components/CardArticle";
 import { convertHtmlToText } from "@/utils/pure_function";
 import FadeInWrapper from "@/components/FadeInWrapper";
 
-export default function Article({ title = "Articles" }) {
+export default function Article({ title = "Articles", locale, dictionary }) {
   const [articles, setArticles] = useState([]);
   const init = async () => {
     const article = await getArticle();
@@ -36,7 +36,8 @@ export default function Article({ title = "Articles" }) {
               key={el.id_article}
               title={el.title}
               detail={el.detail}
-              href={`/resources/article/${el.id_article}`}
+              href={`/${locale}/resources/article/${el.id_article}`}
+              dictionary={dictionary}
             />
           </FadeInWrapper>
         ))}

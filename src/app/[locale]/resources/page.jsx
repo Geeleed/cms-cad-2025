@@ -10,7 +10,9 @@ export default async function Page({ params }) {
   // const v = await getVideoWithRevalidate({ revalidate: 360 });
   // const educational_videos = v.content.en;
   const page_resources = await load_page_resources({ params });
+  const locale = (await params).locale;
   const system_word = await load_system_word({ params });
+  const dictionary = system_word.resource;
   return (
     <div className="page-resources">
       <div className="max-w-[1250px] mx-auto">
@@ -28,7 +30,11 @@ export default async function Page({ params }) {
           </div>
         </section> */}
         <section>
-          <Article title={system_word.resource.articles} />
+          <Article
+            title={system_word.resource.articles}
+            locale={locale}
+            dictionary={dictionary}
+          />
         </section>
         <section>
           <Video title={system_word.resource.educational_videos} />

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import CardVideo from "../components/CardVideo";
 import FadeInWrapper from "@/components/FadeInWrapper";
 
-export default function Video({title="Educational Videos"}) {
+export default function Video({title="Educational Videos",locale}) {
   const [v, setV] = useState();
   const [educational_videos, setEducational_videos] = useState();
   const setVideo = async () =>
