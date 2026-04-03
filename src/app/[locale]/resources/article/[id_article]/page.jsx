@@ -9,6 +9,11 @@ export default async function Page({ params }) {
   }
 
   const result = await getArticleWithIdArticle(id_article);
+
+  if (!result) {
+    return <div>ไม่พบบทความ</div>;
+  }
+
   return (
     <main className="py-[8rem]">
       <div className="max-w-[1250px] mx-auto w-full">
