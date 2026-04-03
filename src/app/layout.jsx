@@ -5,7 +5,7 @@ import { Roboto } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import { CssBaseline } from "@mui/material";
-import { Prompt } from "next/font/google";
+import localFont from "next/font/local";
 import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
@@ -13,9 +13,27 @@ import Link from "next/link";
 import IconUp from "@/components/icons/IconUp";
 // import "./styles.css";
 
-const prompt = Prompt({
-  subsets: ["latin", "thai"], // สำคัญมาก
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+const prompt = localFont({
+  src: [
+    { path: "../../public/statics/fonts/Prompt/Prompt-Thin.ttf", weight: "100", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-ThinItalic.ttf", weight: "100", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-ExtraLight.ttf", weight: "200", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-ExtraLightItalic.ttf", weight: "200", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Light.ttf", weight: "300", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-LightItalic.ttf", weight: "300", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Italic.ttf", weight: "400", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Medium.ttf", weight: "500", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-MediumItalic.ttf", weight: "500", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-SemiBoldItalic.ttf", weight: "600", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Bold.ttf", weight: "700", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-BoldItalic.ttf", weight: "700", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-ExtraBold.ttf", weight: "800", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-ExtraBoldItalic.ttf", weight: "800", style: "italic" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-Black.ttf", weight: "900", style: "normal" },
+    { path: "../../public/statics/fonts/Prompt/Prompt-BlackItalic.ttf", weight: "900", style: "italic" },
+  ],
   display: "swap",
   variable: "--font-prompt",
 });
