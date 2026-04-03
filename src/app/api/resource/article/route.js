@@ -1,37 +1,37 @@
 import { NextResponse } from "next/server";
-
-const EXTERNAL_API = process.env.ARTICLE_API_URL ?? "https://mysql.geeleed.com/api.php";
-const PASSWORD_POST_ARTICLE = process.env.PASSWORD_POST_ARTICLE;
+import pool from "@/config/db";
 
 export async function GET() {
+  const conn = await pool.connect();
   try {
-    const res = await fetch(EXTERNAL_API);
-    const text = await res.text();
-    const article = text ? JSON.parse(text) : [];
-    return NextResponse.json(article);
+    const result = await conn.query(
+      "SELECT id_article, title, description, created_at FROM articles ORDER BY created_at DESC"
+    );
+    return NextResponse.json(result.rows);
   } catch (error) {
     console.error("GET /api/resource/article error:", error);
-    return NextResponse.json([], { status: 200 });
+    return NextResponse.json([], { status: 500 });
+  } finally {
+    conn.release();
   }
 }
 
 export async function POST(request) {
-  const payload = await request.json();
-  const { password } = payload;
-  if (password !== PASSWORD_POST_ARTICLE) {
-    return NextResponse.json({ auth: false });
+  const { title, description, content } = await request.json();
+  if (!title || !content) {
+    return NextResponse.json({ auth: true, data: null, error: "title and content required" }, { status: 400 });
   }
+  const conn = await pool.connect();
   try {
-    const res = await fetch(EXTERNAL_API, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const text = await res.text();
-    const article = text ? JSON.parse(text) : null;
-    return NextResponse.json({ auth: true, data: article });
+    const result = await conn.query(
+      "INSERT INTO articles (title, description, content) VALUES ($1, $2, $3) RETURNING *",
+      [title, description ?? "", content]
+    );
+    return NextResponse.json({ auth: true, data: result.rows[0] });
   } catch (error) {
     console.error("POST /api/resource/article error:", error);
-    return NextResponse.json({ auth: true, data: null }, { status: 200 });
+    return NextResponse.json({ auth: false, error: "database error" }, { status: 500 });
+  } finally {
+    conn.release();
   }
 }

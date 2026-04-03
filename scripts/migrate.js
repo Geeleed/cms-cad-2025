@@ -13,6 +13,7 @@ const pool = new Pool({
 const migrations = [
   "001_create_cadcenter_schema.sql",
   "002_add_news_table.sql",
+  "003_create_articles_table.sql",
 ];
 
 async function runMigrations() {

@@ -1,5 +1,6 @@
 import React from "react";
 import Footer from "./footer";
+import FooterWrapper from "./FooterWrapper";
 
 export async function generateStaticParams() {
   const locales = ["en", "th"];
@@ -11,7 +12,7 @@ export default async function layout({ children, params }) {
   return (
     <div>
       {children}
-      <Footer locale={locale} />
+      <FooterWrapper footer={<Footer locale={locale} />} />
     </div>
   );
 }

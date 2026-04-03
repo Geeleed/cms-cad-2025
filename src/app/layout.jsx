@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
 import Link from "next/link";
 import IconUp from "@/components/icons/IconUp";
+import AntdProvider from "@/components/AntdProvider";
 // import "./styles.css";
 
 const prompt = localFont({
@@ -86,6 +87,7 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <AntdProvider>
             {/* <ResponsiveAppBar /> */}
             <div className="w-dvw overflow-x-hidden">
               <Navbar />
@@ -98,6 +100,7 @@ export default function RootLayout({ children }) {
               </Link>
               {/* <Footer /> */}
             </div>
+            </AntdProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
