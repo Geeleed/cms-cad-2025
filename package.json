@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack --port=3300",
     "build": "next build",
     "start": "next start --port=3300",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "node --env-file=.env.development scripts/migrate.js"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
