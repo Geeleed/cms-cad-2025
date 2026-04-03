@@ -1,20 +1,11 @@
 "use client";
 import { postArticle } from "@/api/fetcher";
+import ArticleToolbar from "@/components/admin/ArticleToolbar";
 import useBlogger from "@/hooks/useBlogger";
 import { convert_rgba_to_hex } from "@/utils/pure_function";
-import {
-  AlignCenterOutlined,
-  AlignLeftOutlined,
-  AlignRightOutlined,
-  BoldOutlined,
-  FileImageOutlined,
-  ItalicOutlined,
-  UnderlineOutlined,
-} from "@ant-design/icons";
-import { Button, ColorPicker, Input, Modal, message } from "antd";
-import Title from "antd/es/typography/Title";
+import { Button, Input, Modal, message } from "antd";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -24,16 +15,16 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [color, setColor] = useState("#1677ff");
+  const [color, setColor] = useState("#000000");
   const [submitting, setSubmitting] = useState(false);
 
-  const inputInsertImageRef = useRef();
+  const { useAction, preview, EditorZone } = useBlogger();
 
-  const {
-    useAction,
-    preview,
-    EditorZone,
-  } = useBlogger();
+  const onColorChange = (e) => {
+    const hex = convert_rgba_to_hex({ ...e.metaColor });
+    setColor(hex);
+    useAction.setColor(hex);
+  };
 
   const submitArticle = async () => {
     const content = useAction.getHTML();
@@ -61,179 +52,54 @@ export default function Page() {
     }
   };
 
-  const onChangeTextColor = (e) => {
-    const hex = convert_rgba_to_hex({ ...e.metaColor });
-    setColor(hex);
-    useAction.setColor(hex);
-  };
-
-  const onSetLink = () => {
-    const url = window.prompt("url");
-    useAction.setLink(url, "_blank");
-  };
-
   return (
-    <div className="max-w-[1250px] w-full mx-auto mb-[8rem]">
-      <div className="mt-[2rem] mb-[1rem]" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+    <div className="max-w-[900px] w-full mx-auto pb-[4rem]">
+      {/* Header */}
+      <div className="mt-[2rem] mb-[1.5rem]" style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Button onClick={() => router.push(`/${locale}/admin/article`)}>← กลับ</Button>
         <h1 style={{ margin: 0 }}>เพิ่มบทความใหม่</h1>
       </div>
-      <section>
-        <Title level={2}>Title</Title>
-        <Input
-          placeholder="Title"
-          onChange={(val) => setTitle(val.target.value)}
-        />
-      </section>
-      <section className="mt-[1rem]">
-        <Title level={2}>Article Content</Title>
-        {EditorZone}
-      </section>
-      <section className="article-toolbar">
-        <div className="text-bar">
-          <label>Text: </label>
-          <BoldOutlined onClick={useAction.toggleBold} />
-          <ItalicOutlined onClick={useAction.toggleItalic} />
-          <UnderlineOutlined onClick={useAction.toggleUnderline} />
-          {/* <StrikethroughOutlined onClick={useAction.toggleStrike} /> */}
-          {/* <UnorderedListOutlined onClick={useAction.toggleBulletList} /> */}
-          {/* <OrderedListOutlined onClick={useAction.toggleOrderedList} /> */}
 
-          <AlignLeftOutlined onClick={useAction.setTextAlignLeft} />
-          <AlignCenterOutlined onClick={useAction.setTextAlignCenter} />
-          <AlignRightOutlined onClick={useAction.setTextAlignRight} />
+      {/* Title */}
+      <Input
+        placeholder="หัวข้อบทความ..."
+        size="large"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        style={{ marginBottom: 12, fontSize: 20, fontWeight: 600 }}
+      />
 
-          <div
-            className="button-solid-color"
-            onClick={() => useAction.setColor("#fa5456")}
-          >
-            <div className="bg-(--c)"></div>
-          </div>
-          <div
-            className="button-solid-color"
-            onClick={() => useAction.setColor("#fc8823")}
-          >
-            <div className="bg-(--a)"></div>
-          </div>
-          <div
-            className="button-solid-color"
-            onClick={() => useAction.setColor("#00b5bc")}
-          >
-            <div className="bg-(--d)"></div>
-          </div>
-          <div
-            className="button-solid-color"
-            onClick={() => useAction.setColor("#000")}
-          >
-            <div className="bg-black"></div>
-          </div>
-          <div
-            className="button-solid-color"
-            onClick={() => useAction.setColor("#fff")}
-          >
-            <div className="bg-white"></div>
-          </div>
+      {/* Description */}
+      <Input.TextArea
+        placeholder="คำอธิบายสั้น ๆ เกี่ยวกับบทความ..."
+        rows={2}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        style={{ marginBottom: 16 }}
+      />
 
-          <ColorPicker value={color} onChangeComplete={onChangeTextColor} />
-
-          <div
-            className="cursor-pointer underline text-blue-500"
-            onClick={onSetLink}
-          >
-            Link
-          </div>
-
-          {/* <Select
-            defaultValue="paragraph"
-            style={{ width: 150 }}
-            onChange={(val) => {
-              if (val === "paragraph") {
-                useAction.setParagraph();
-              } else if (val.startsWith("heading")) {
-                const level = parseInt(val.replace("heading", ""), 10);
-                useAction.setHeading(level);
-              }
-            }}
-            options={optionList.headingOptions}
-          /> */}
-          <Button onClick={() => useAction.setParagraph()}>P</Button>
-          <Button onClick={() => useAction.setHeading(1)}>H1</Button>
-          <Button onClick={() => useAction.setHeading(2)}>H2</Button>
-          <Button onClick={() => useAction.setHeading(3)}>H3</Button>
-          <Button onClick={() => useAction.setHeading(4)}>H4</Button>
-          <Button onClick={() => useAction.setHeading(5)}>H5</Button>
-          <Button onClick={() => useAction.setHeading(6)}>H6</Button>
-          {/* <Select
-            //   defaultValue="16px"
-            style={{ width: 100 }}
-            onChange={(val) => useAction.setFontSize(val)}
-            options={optionList.fontSizeOptions}
-          /> */}
-          {/* <Select
-            //   defaultValue="Arial"
-            style={{ width: 150 }}
-            onChange={(font) => useAction.setFontFamily(font)}
-            options={optionList.fontFamilyOption}
-          /> */}
+      {/* Editor container */}
+      <div style={{ border: "1px solid #d9d9d9", borderRadius: 8, overflow: "hidden" }}>
+        <ArticleToolbar useAction={useAction} color={color} onColorChange={onColorChange} />
+        <div style={{ padding: "16px 20px", minHeight: 400, background: "#fff" }}>
+          {EditorZone}
         </div>
-        <div className="image-bar">
-          <label>Image: </label>
-          <FileImageOutlined
-            onClick={() => inputInsertImageRef.current.click()}
-          />
-          <input
-            hidden
-            ref={inputInsertImageRef}
-            type="file"
-            accept="image/*"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const imageUrl = reader.result?.toString();
-                  useAction.insertImage({
-                    src: imageUrl,
-                    width: "300px",
-                    height: "auto",
-                    align: "center", // "left" | "center" | "right"
-                  });
-                };
-                reader.readAsDataURL(file);
-              }
-            }}
-          />
+      </div>
 
-          <AlignLeftOutlined
-            onClick={() => useAction.alignSelectedImage("left")}
-          />
-          <AlignCenterOutlined
-            onClick={() => useAction.alignSelectedImage("center")}
-          />
-          <AlignRightOutlined
-            onClick={() => useAction.alignSelectedImage("right")}
-          />
-        </div>
-        <div className="button-bar">
-          <button onClick={() => setPreviewVisible(true)}>Preview</button>
-          <button onClick={submitArticle} disabled={submitting}>
-            {submitting ? "กำลังบันทึก..." : "Submit"}
-          </button>
-        </div>
-      </section>
-      <section className="mt-[1rem]">
-        <Title level={2}>Description</Title>
-        <Input
-          placeholder="Description"
-          onChange={(val) => setDescription(val.target.value)}
-        />
-      </section>
+      {/* Actions */}
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}>
+        <Button onClick={() => setPreviewVisible(true)}>Preview</Button>
+        <Button type="primary" onClick={submitArticle} loading={submitting}>
+          บันทึกบทความ
+        </Button>
+      </div>
+
       <Modal
         title={title || "Untitled"}
         open={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
-        width={1250}
+        width={900}
       >
         {preview}
       </Modal>

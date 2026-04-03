@@ -1,4 +1,6 @@
 "use client";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
 import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
 import Color from "@tiptap/extension-color";
@@ -361,24 +363,6 @@ const initFontFamilyOption = [
   { value: "IBM Plex Sans, sans-serif", label: "IBM Plex Sans" },
 ];
 
-const extensions = [
-  StarterKit,
-  Underline,
-  Strike,
-  Highlight,
-  TextStyle,
-  FontSize,
-  FontFamily,
-  Color,
-  Link,
-  TextAlign.configure({ types: ["heading", "paragraph"] }),
-  HorizontalRule,
-  HardBreak,
-  Subscript,
-  Superscript,
-  ImageWithResize,
-];
-
 export default function useBlogger() {
   const [className, onSetClassName] = useState("editor-content");
 
@@ -393,7 +377,27 @@ export default function useBlogger() {
   );
 
   const editor = useEditor({
-    extensions,
+    extensions: [
+      StarterKit,
+      Underline,
+      Strike,
+      Highlight,
+      TextStyle,
+      FontSize,
+      FontFamily,
+      Color,
+      Link,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      HorizontalRule,
+      HardBreak,
+      Subscript,
+      Superscript,
+      ImageWithResize,
+      Table.configure({ resizable: false }),
+      TableRow,
+      CustomTableCell,
+      CustomTableHeader,
+    ],
     content: initHtmlContent,
   });
 
@@ -471,6 +475,21 @@ export default function useBlogger() {
     }
   };
 
+  // Table commands
+  const insertTable = ({ rows = 3, cols = 3, withHeaderRow = true } = {}) =>
+    editor?.chain().focus().insertTable({ rows, cols, withHeaderRow }).run();
+  const addColumnBefore = () => editor?.chain().focus().addColumnBefore().run();
+  const addColumnAfter = () => editor?.chain().focus().addColumnAfter().run();
+  const deleteColumn = () => editor?.chain().focus().deleteColumn().run();
+  const addRowBefore = () => editor?.chain().focus().addRowBefore().run();
+  const addRowAfter = () => editor?.chain().focus().addRowAfter().run();
+  const deleteRow = () => editor?.chain().focus().deleteRow().run();
+  const deleteTable = () => editor?.chain().focus().deleteTable().run();
+  const mergeCells = () => editor?.chain().focus().mergeCells().run();
+  const splitCell = () => editor?.chain().focus().splitCell().run();
+  const toggleHeaderRow = () => editor?.chain().focus().toggleHeaderRow().run();
+  const isInTable = () => editor?.isActive("table") ?? false;
+
   const preview = (
     <div dangerouslySetInnerHTML={{ __html: editor?.getHTML() }} />
   );
@@ -507,8 +526,28 @@ export default function useBlogger() {
     getHTML,
     insertImage,
     alignSelectedImage,
+    insertTable,
+    addColumnBefore,
+    addColumnAfter,
+    deleteColumn,
+    addRowBefore,
+    addRowAfter,
+    deleteRow,
+    deleteTable,
+    mergeCells,
+    splitCell,
+    toggleHeaderRow,
+    isInTable,
   };
   const EditorZone = <EditorContent editor={editor} className={className} />;
+
+  const setInitHtmlContent = (html) => {
+    if (editor) {
+      editor.commands.setContent(html ?? "");
+    } else {
+      onSetInitHtmlContent(html);
+    }
+  };
 
   return {
     useAction,
@@ -516,6 +555,7 @@ export default function useBlogger() {
     preview,
     EditorZone,
     onSetClassName,
-    onSetInitHtmlContent,
+    onSetInitHtmlContent: setInitHtmlContent,
+    editorReady: !!editor,
   };
 }

@@ -1,7 +1,6 @@
 "use client";
 import { getArticle } from "@/api/fetcher";
 import FadeInWrapper from "@/components/FadeInWrapper";
-import { convertHtmlToText } from "@/utils/pure_function";
 import React, { useEffect, useState } from "react";
 
 export default function Resources({
@@ -14,20 +13,14 @@ export default function Resources({
   const [article, setArticle] = useState([]);
   const init = async () => {
     const article = await getArticle();
-    const temp = [];
     const num = article.length > 3 ? 3 : article.length;
-    for (let i = 0; i < num; i++) {
-      const element = article[i];
-      const content = element.content;
-      const text = convertHtmlToText(content);
-      temp.push({
-        title: element.title,
-        detail: text,
-        id_article: element.id_article,
-        content: element.content,
-      });
-    }
-    setArticle(temp);
+    setArticle(
+      article.slice(0, num).map((el) => ({
+        title: el.title,
+        detail: el.description,
+        id_article: el.id_article,
+      }))
+    );
   };
   useEffect(() => {
     init();
@@ -40,7 +33,7 @@ export default function Resources({
       <div className="max-w-[1250px] w-full">
         <div>
           <h3>{dictionary.articles}</h3>
-          <div className="flex justify-center gap-[20px] max-[1025px]:grid max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1">
+          <div className="grid grid-cols-3 gap-[1rem] justify-items-center max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 max-[821px]:gap-[2rem]">
             {article.map((el) => (
               <CardArticle
                 key={el.id_article}

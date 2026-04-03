@@ -1,6 +1,6 @@
 "use client";
 import { Card, Row, Col, Typography } from "antd";
-import { FileTextOutlined, PictureOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { FileTextOutlined, PictureOutlined, ReadOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function AdminDashboard() {
@@ -27,6 +27,12 @@ export default function AdminDashboard() {
       title: "จัดการวิดีโอ",
       desc: "เพิ่ม / ลบวิดีโอ YouTube ในหน้า Resources",
       path: `${base}/video`,
+    },
+    {
+      icon: <ReadOutlined style={{ fontSize: 32, color: "#722ed1" }} />,
+      title: "จัดการบทความ",
+      desc: "เขียน / แก้ไข / ลบบทความในหน้า Resources",
+      path: `${base}/article`,
     },
   ];
 

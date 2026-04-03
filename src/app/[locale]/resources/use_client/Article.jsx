@@ -2,26 +2,19 @@
 import { getArticle } from "@/api/fetcher";
 import React, { useEffect, useState } from "react";
 import { CardArticle } from "../components/CardArticle";
-import { convertHtmlToText } from "@/utils/pure_function";
 import FadeInWrapper from "@/components/FadeInWrapper";
 
 export default function Article({ title = "Articles", locale, dictionary }) {
   const [articles, setArticles] = useState([]);
   const init = async () => {
     const article = await getArticle();
-    const temp = [];
-    for (let i = 0; i < article.length; i++) {
-      const element = article[i];
-      const content = element.content;
-      const text = convertHtmlToText(content);
-      temp.push({
-        title: element.title,
-        detail: text,
-        id_article: element.id_article,
-        content: element.content,
-      });
-    }
-    setArticles(temp);
+    setArticles(
+      article.map((el) => ({
+        title: el.title,
+        detail: el.description,
+        id_article: el.id_article,
+      }))
+    );
   };
   useEffect(() => {
     init();
