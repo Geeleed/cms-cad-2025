@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
-import news from "@/static_json/news.json";
+import pool from "@/config/db";
 
 export async function GET() {
-  return NextResponse.json(news);
+  const conn = await pool.connect();
+  try {
+    const result = await conn.query(
+      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM news ORDER BY id DESC"
+    );
+    return NextResponse.json(result.rows);
+  } catch (error) {
+    console.error("GET /api/news error:", error);
+    return NextResponse.json([], { status: 500 });
+  } finally {
+    conn.release();
+  }
 }

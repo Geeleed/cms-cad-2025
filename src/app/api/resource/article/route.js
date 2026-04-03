@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const EXTERNAL_API = "https://mysql.geeleed.com/api.php";
+const EXTERNAL_API = process.env.ARTICLE_API_URL ?? "https://mysql.geeleed.com/api.php";
 const PASSWORD_POST_ARTICLE = process.env.PASSWORD_POST_ARTICLE;
 
 export async function GET() {

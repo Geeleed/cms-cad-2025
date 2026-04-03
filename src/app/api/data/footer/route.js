@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
-import cad__resource from "@/static_json/cad__resource.json";
+import pool from "@/config/db";
 
 export async function POST(request) {
+  const { locale } = await request.json();
+  const conn = await pool.connect();
   try {
-    const { locale } = await request.json();
-    const value_setting = cad__resource.find(
-      (el) =>
-        el.resource_type === "value_setting" &&
-        el.name === `value_setting_${locale}`
+    const result = await conn.query(
+      "SELECT resource FROM cad__resource WHERE resource_type = $1 AND name = $2",
+      ["value_setting", `value_setting_${locale}`]
     );
+    const res = result.rows[0]?.resource;
+    if (!res) return NextResponse.json({}, { status: 404 });
     const {
       facebook_label, facebook_link,
       line_label, line_link,
       email_label, email_link,
       tel_label, tel_link,
       address, map, footer,
-    } = value_setting.resource;
+    } = res;
     const contact = {
       facebook_label, facebook_link,
       line_label, line_link,
@@ -26,5 +28,7 @@ export async function POST(request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });
+  } finally {
+    conn.release();
   }
 }

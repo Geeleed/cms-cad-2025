@@ -1,20 +1,33 @@
 import { NextResponse } from "next/server";
+import pool from "@/config/db";
 
-const pageMap = {
-  home: () => require("@/static_json/home_en.json"),
-  about: () => require("@/static_json/about_en.json"),
-  approach: () => require("@/static_json/approach_en.json"),
-  contact: () => require("@/static_json/contact_en.json"),
-  doctor: () => require("@/static_json/doctor_en.json"),
-  service: () => require("@/static_json/service_en.json"),
-  team: () => require("@/static_json/team_en.json"),
-};
+const VALID_SLUGS = new Set(["home", "about", "approach", "contact", "doctor", "service", "team"]);
 
 export async function GET(request, { params }) {
   const { slug } = await params;
-  const loader = pageMap[slug];
-  if (!loader) {
+  if (!VALID_SLUGS.has(slug)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-  return NextResponse.json({ en: loader(), th: null });
+  const conn = await pool.connect();
+  try {
+    const [enResult, thResult] = await Promise.all([
+      conn.query(
+        "SELECT resource FROM cad__resource WHERE resource_type = $1 AND name = $2",
+        ["page_content", `${slug}_en`]
+      ),
+      conn.query(
+        "SELECT resource FROM cad__resource WHERE resource_type = $1 AND name = $2",
+        ["page_content", `${slug}_th`]
+      ),
+    ]);
+    return NextResponse.json({
+      en: enResult.rows[0]?.resource ?? null,
+      th: thResult.rows[0]?.resource ?? null,
+    });
+  } catch (error) {
+    console.error(`GET /api/page/${slug} error:`, error);
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+  } finally {
+    conn.release();
+  }
 }
