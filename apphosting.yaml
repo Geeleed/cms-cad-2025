@@ -1,0 +1,15 @@
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: DATABASE_URL
+    secret: DATABASE_URL
+  - variable: ADMIN_PASSWORD
+    secret: ADMIN_PASSWORD
+  - variable: ADMIN_SESSION_SECRET
+    secret: ADMIN_SESSION_SECRET
+  - variable: PASSWORD_POST_ARTICLE
+    secret: PASSWORD_POST_ARTICLE
