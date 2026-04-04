@@ -3,6 +3,8 @@
 import React from "react";
 // import CardVideo from "./components/CardVideo";
 import Video from "./use_client/Video";
+
+export const dynamic = 'force-dynamic';
 import Article from "./use_client/Article";
 import { load_page_resources, load_system_word } from "@/api/loadData";
 

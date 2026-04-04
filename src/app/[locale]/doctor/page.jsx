@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({ params }) {
   const page_doctor = await load_page_doctor({ params });
   const d = page_doctor.resource;

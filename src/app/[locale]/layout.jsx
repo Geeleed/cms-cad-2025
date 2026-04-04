@@ -2,6 +2,8 @@ import React from "react";
 import Footer from "./footer";
 import FooterWrapper from "./FooterWrapper";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   const locales = ["en", "th"];
   return locales.map((locale) => ({ locale }));

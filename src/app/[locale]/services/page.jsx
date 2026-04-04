@@ -1,6 +1,8 @@
 import { getService } from "@/api/fetcher";
 import Image from "next/image";
 import React from "react";
+
+export const dynamic = 'force-dynamic';
 import Paragraph from "./components/Paragraph";
 import FadeInWrapper from "@/components/FadeInWrapper";
 import { load_page_services } from "@/api/loadData";

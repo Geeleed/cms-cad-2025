@@ -1,6 +1,8 @@
 import SolidCircle from "@/components/SolidCircle";
 import React from "react";
 import About from "./components/About";
+
+export const dynamic = 'force-dynamic';
 import Services from "./components/Services";
 import Doctor from "./components/Doctor";
 import Approaches from "./components/Approaches";

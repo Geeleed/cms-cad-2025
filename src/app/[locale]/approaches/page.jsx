@@ -3,6 +3,8 @@ import En from "./En";
 import { getApproach } from "@/api/fetcher";
 import Image from "next/image";
 import Link from "next/link";
+
+export const dynamic = 'force-dynamic';
 import FadeInWrapper from "@/components/FadeInWrapper";
 import ContainerSection from "./components/ContainerSection";
 import { load_page_approaches } from "@/api/loadData";

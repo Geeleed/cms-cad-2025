@@ -3,6 +3,8 @@ import FadeInWrapper from "@/components/FadeInWrapper";
 import Image from "next/image";
 import React from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({ params }) {
   const page_about = await load_page_about({ params });
   return (

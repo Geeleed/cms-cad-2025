@@ -1,6 +1,8 @@
 import { fetchData, getTeam } from "@/api/fetcher";
 import React from "react";
 import CardTeam from "./components/CardTeam";
+
+export const dynamic = 'force-dynamic';
 import FadeInWrapper from "@/components/FadeInWrapper";
 import CardTeam2 from "./components/CardTeam2";
 import { load_page_team, load_system_word } from "@/api/loadData";
