@@ -8,7 +8,7 @@ import React from "react";
 
 export default function Services({
   servicesTitle,
-  servicesCard,
+  servicesCard = [],
   locale,
   dictionary,
 }) {

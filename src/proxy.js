@@ -35,7 +35,7 @@ async function verifyToken(token) {
   }
 }
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Only guard /[locale]/admin/* paths

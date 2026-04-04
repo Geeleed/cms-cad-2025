@@ -11,7 +11,7 @@ import React from "react";
 
 export default function Approaches({
   approachesTitle,
-  approachesCard,
+  approachesCard = [],
   locale,
   dictionary,
 }) {

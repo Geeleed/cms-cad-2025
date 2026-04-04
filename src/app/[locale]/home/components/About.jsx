@@ -10,7 +10,7 @@ export default function About({
   aboutSubtitle,
   aboutP1,
   aboutP2,
-  aboutCard,
+  aboutCard = [],
   locale,
 }) {
   const rt = "page_about";

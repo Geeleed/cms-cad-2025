@@ -386,6 +386,7 @@ li {
   height: fit-content;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding-bottom: 6rem;
   .left {
     display: flex;
     justify-content: center;

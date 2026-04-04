@@ -18,18 +18,18 @@ export default async function page({ params }) {
   const locale = (await params).locale;
   const page_home = await load_page_landing({ params });
   const {
-    sectionHome: { h1_1, h1_2, p, img },
-    sectionBasicInfo: { contacts, openSchedule, basicServices },
-    sectionWelcome: { welcomeTitle, welcomeP },
-    sectionAbout: { aboutTitle, aboutSubtitle, aboutP1, aboutP2, aboutCard },
-    sectionTeam: { teamTitle, teamCard },
-    sectionDoctor: { doctorImg, doctorIntro, buttonLabel },
-    sectionServices: { servicesTitle, servicesCard },
-    sectionApproaches: { approachesTitle, approachesCard },
-    sectionResources: { resourcesTitle, articlesList, videosList },
-    sectionNews: { newsTitle, newsList },
-    sectionFooter: { address, footer, map },
-  } = page_home;
+    sectionHome: { h1_1, h1_2, p, img } = {},
+    sectionBasicInfo: { contacts = [], openSchedule = [], basicServices } = {},
+    sectionWelcome: { welcomeTitle, welcomeP } = {},
+    sectionAbout: { aboutTitle, aboutSubtitle, aboutP1, aboutP2, aboutCard } = {},
+    sectionTeam: { teamTitle, teamCard } = {},
+    sectionDoctor: { doctorImg, doctorIntro, buttonLabel } = {},
+    sectionServices: { servicesTitle, servicesCard } = {},
+    sectionApproaches: { approachesTitle, approachesCard } = {},
+    sectionResources: { resourcesTitle, articlesList, videosList } = {},
+    sectionNews: { newsTitle, newsList } = {},
+    sectionFooter: { address, footer, map } = {},
+  } = page_home ?? {};
   const system_word = await load_system_word({ params });
   const dictionary = system_word.resource;
   return (
