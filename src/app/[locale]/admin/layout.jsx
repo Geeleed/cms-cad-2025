@@ -9,6 +9,7 @@ import {
   ReadOutlined,
 } from "@ant-design/icons";
 import { useRouter, usePathname } from "next/navigation";
+import { ADMIN_SESSION_EVENT } from "@/hooks/useAdminSession";
 
 const { Header, Sider, Content } = Layout;
 
@@ -21,7 +22,8 @@ export default function AdminLayout({ children }) {
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push(`${base}/login`);
+    window.dispatchEvent(new Event(ADMIN_SESSION_EVENT));
+    router.push(`/${locale}/home`);
   };
 
   const menuItems = [

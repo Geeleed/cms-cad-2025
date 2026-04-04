@@ -1,4 +1,5 @@
 "use client";
+import AdminLoginModal from "@/components/admin/AdminLoginModal";
 import InlineContactList from "@/components/admin/InlineContactList";
 import InlineText from "@/components/admin/InlineText";
 import Link from "next/link";
@@ -47,6 +48,9 @@ export default function Contact({
                 {dictionary.approaches}
               </Link>
               <Link href={`/${locale}/resources`}>{dictionary.resources}</Link>
+            </div>
+            <div className="mt-[1rem]">
+              <AdminLoginModal locale={locale} />
             </div>
           </div>
         </div>

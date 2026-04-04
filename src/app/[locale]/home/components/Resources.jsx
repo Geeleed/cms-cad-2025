@@ -1,38 +1,32 @@
 "use client";
-import { getArticle } from "@/api/fetcher";
 import FadeInWrapper from "@/components/FadeInWrapper";
-import React, { useEffect, useState } from "react";
+import InlineText from "@/components/admin/InlineText";
+import React from "react";
 
 export default function Resources({
   resourcesTitle,
-  articlesList,
+  articlesList = [],
   videosList,
   dictionary,
   locale,
 }) {
-  const [article, setArticle] = useState([]);
-  const init = async () => {
-    const article = await getArticle();
-    const num = article.length > 3 ? 3 : article.length;
-    setArticle(
-      article.slice(0, num).map((el) => ({
-        title: el.title,
-        detail: el.description,
-        id_article: el.id_article,
-      }))
-    );
-  };
-  useEffect(() => {
-    init();
-  }, []);
+  const article = articlesList.map((el) => ({
+    title: el.title,
+    detail: el.description,
+    id_article: el.id_article,
+  }));
   return (
     <section className="section-resources">
       <div className="flex justify-center">
-        <h2>{resourcesTitle}</h2>
+        <h2>
+          <InlineText value={resourcesTitle} resourceType="page_resources" resourceName={`page_resources_${locale}`} fieldKey="title" />
+        </h2>
       </div>
       <div className="max-w-[1250px] w-full">
         <div>
-          <h3>{dictionary.articles}</h3>
+          <h3>
+            <InlineText value={dictionary.articles} resourceType="system_word" resourceName={`system_word_${locale}`} fieldKey="articles" />
+          </h3>
           <div className="grid grid-cols-3 gap-[1rem] justify-items-center max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 max-[821px]:gap-[2rem]">
             {article.map((el) => (
               <CardArticle
@@ -81,7 +75,9 @@ export default function Resources({
           </div>
         </div>
         <div>
-          <h3>{dictionary.educational_videos}</h3>
+          <h3>
+            <InlineText value={dictionary.educational_videos} resourceType="system_word" resourceName={`system_word_${locale}`} fieldKey="educational_videos" />
+          </h3>
           <div className="grid grid-cols-3 gap-[1rem] justify-items-center max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 max-[821px]:gap-[2rem]">
             <CardVideo
               title={

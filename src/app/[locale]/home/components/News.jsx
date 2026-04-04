@@ -1,18 +1,21 @@
-import { getNews } from "@/api/fetcher";
+"use client";
+import InlineText from "@/components/admin/InlineText";
 import Link from "next/link";
 import React from "react";
 
-export default async function News({
+export default function News({
   newsTitle,
-  newsList,
+  newsList = [],
   dictionary,
   locale,
 }) {
-  const news = await getNews();
+  const news = newsList;
   return (
     <section className="section-news">
       <div className="flex justify-center">
-        <h2>{newsTitle}</h2>
+        <h2>
+          <InlineText value={newsTitle} resourceType="page_news" resourceName={`page_news_${locale}`} fieldKey="title" />
+        </h2>
       </div>
       <div className="grid grid-cols-3 max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 gap-4 max-w-[1250px] mx-auto">
         {(news || []).slice(0, 3).map((el, index) => (

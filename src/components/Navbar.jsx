@@ -1,4 +1,5 @@
 "use client";
+import useAdminSession from "@/hooks/useAdminSession";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -7,8 +8,8 @@ import { load_system_word } from "@/api/loadData";
 
 export default function Navbar() {
   const [locale, setLocale] = useState("");
-
   const [dict, setDict] = useState({});
+  const { isAdmin } = useAdminSession();
 
   const onChangeLocale = (value) => {
     localStorage.setItem("locale", value);
@@ -94,6 +95,14 @@ export default function Navbar() {
                 {/* News */}
                 {dict?.news}
               </Link>
+              {isAdmin && (
+                <Link
+                  className="nav-link text-(--primary-1) font-semibold"
+                  href={`/${locale}/admin`}
+                >
+                  Admin
+                </Link>
+              )}
               {locale && (
                 <div className="group-button-switch-locale">
                   <button
@@ -168,6 +177,14 @@ export default function Navbar() {
             {/* News */}
             {dict?.news}
           </Link>
+          {isAdmin && (
+            <Link
+              className="nav-link text-(--primary-1) font-semibold"
+              href={`/${locale}/admin`}
+            >
+              Admin
+            </Link>
+          )}
           {locale && (
             <div className="group-button-switch-locale">
               <button

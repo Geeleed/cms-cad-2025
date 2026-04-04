@@ -5,6 +5,14 @@ export async function POST(request) {
   const { locale } = await request.json();
   const conn = await pool.connect();
   try {
+    // Fetch news and articles in parallel with resource configs
+    const newsPromise = conn.query(
+      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM news ORDER BY id DESC LIMIT 3"
+    );
+    const articlesPromise = conn.query(
+      "SELECT id_article, title, description FROM articles ORDER BY created_at DESC LIMIT 3"
+    );
+
     const resourceConfigs = [
       { type: "page_landing", name: `section_home_${locale}`, key: "sectionHome" },
       { type: "page_landing", name: `section_welcome_${locale}`, key: "sectionWelcome" },
@@ -94,10 +102,20 @@ export async function POST(request) {
           returnResult.sectionResources = { resourcesTitle: resData.title, articlesList: [], videosList: [] };
           break;
         case "sectionNews":
-          returnResult.sectionNews = { newsTitle: resData.title, newsList: [] };
+          returnResult.sectionNews = { newsTitle: resData.title };
           break;
       }
     });
+
+    const newsResult = await newsPromise;
+    if (returnResult.sectionNews) {
+      returnResult.sectionNews.newsList = newsResult.rows;
+    }
+
+    const articlesResult = await articlesPromise;
+    if (returnResult.sectionResources) {
+      returnResult.sectionResources.articlesList = articlesResult.rows;
+    }
 
     return NextResponse.json(returnResult);
   } catch (error) {
