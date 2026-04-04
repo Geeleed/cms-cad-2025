@@ -12,11 +12,11 @@ export async function GET(request, { params }) {
   try {
     const [enResult, thResult] = await Promise.all([
       conn.query(
-        "SELECT resource FROM cad__resource WHERE resource_type = $1 AND name = $2",
+        "SELECT resource FROM cadcenter.cad__resource WHERE resource_type = $1 AND name = $2",
         ["page_content", `${slug}_en`]
       ),
       conn.query(
-        "SELECT resource FROM cad__resource WHERE resource_type = $1 AND name = $2",
+        "SELECT resource FROM cadcenter.cad__resource WHERE resource_type = $1 AND name = $2",
         ["page_content", `${slug}_th`]
       ),
     ]);

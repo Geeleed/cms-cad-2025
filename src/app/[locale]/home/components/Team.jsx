@@ -44,7 +44,7 @@ export default function Team({ teamTitle, teamCard, locale }) {
 
   //     return () => clearInterval(timerRef.current);
   //   }, [pause]);
-  const teamData = teamCard.map((el) => ({
+  const teamData = (teamCard || []).map((el) => ({
     name: el.person_name,
     role: el.role,
     detail: el.position,
@@ -77,6 +77,7 @@ export default function Team({ teamTitle, teamCard, locale }) {
                             width={400}
                             height={400}
                             alt={member.name}
+                            sizes="(max-width: 820px) 100vw, (max-width: 1180px) 50vw, 33vw"
                           />
                         </div>
                         <div className="text">

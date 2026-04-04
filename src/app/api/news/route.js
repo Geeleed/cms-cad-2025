@@ -5,7 +5,7 @@ export async function GET() {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM news ORDER BY id DESC"
+      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM cadcenter.news ORDER BY id DESC"
     );
     return NextResponse.json(result.rows);
   } catch (error) {

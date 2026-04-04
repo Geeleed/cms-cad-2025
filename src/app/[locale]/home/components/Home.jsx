@@ -35,6 +35,8 @@ export default function Home({ h1_1, h1_2, p, img, locale }) {
               width={1000}
               height={1000}
               alt="CAD center team"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
             />
           </div>
         </FadeInWrapper>

@@ -14,8 +14,8 @@ export default function CardBasicInfo({
   dictionary,
   locale,
 }) {
-  const services = basicServices;
-  const dict = dictionary;
+  const services = basicServices || [];
+  const dict = dictionary || {};
   const rt = "value_setting";
   const rn = `value_setting_${locale}`;
   return (

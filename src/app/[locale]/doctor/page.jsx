@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 export default async function Page({ params }) {
   const page_doctor = await load_page_doctor({ params });
   const d = page_doctor.resource;
+  if (!d?.child) return null;
   const src_image_banner = d.child.find((el) => el.content.name === "banner")
     .content.src_image;
   const src_image_doctor = d.child.find((el) => el.content.name === "doctor")

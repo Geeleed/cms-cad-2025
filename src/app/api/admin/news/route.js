@@ -6,7 +6,7 @@ export async function GET() {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "SELECT * FROM news ORDER BY id DESC"
+      "SELECT * FROM cadcenter.news ORDER BY id DESC"
     );
     return NextResponse.json(result.rows);
   } catch (error) {
@@ -26,7 +26,7 @@ export async function POST(request) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "INSERT INTO news (img_src, title, date, href) VALUES ($1, $2, $3, $4) RETURNING *",
+      "INSERT INTO cadcenter.news (img_src, title, date, href) VALUES ($1, $2, $3, $4) RETURNING *",
       [img_src ?? "", title, date ?? "", href]
     );
     return NextResponse.json(result.rows[0], { status: 201 });

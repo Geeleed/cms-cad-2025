@@ -56,7 +56,7 @@ export default async function page({ params }) {
           </div>
         </FadeInWrapper>
         <div className="flex flex-col">
-          {page_team.resource.team.map((el, index) => (
+          {(page_team.resource.team || []).map((el, index) => (
             <CardTeam2
               key={index}
               data={el}

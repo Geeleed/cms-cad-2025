@@ -1,8 +1,28 @@
+const FETCH_TIMEOUT_MS = 10000;
+
+const fetchWithTimeout = (url, options) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timer)
+  );
+};
+
+const safeJson = async (r) => {
+  const text = await r.text().catch(() => "");
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+};
+
 export const fetchGetJson = async ({ url, options = {}, nextOptions = {} }) =>
-  await fetch(url, {
+  await fetchWithTimeout(url, {
     ...options,
     next: { ...nextOptions },
-  }).then((r) => r.json());
+  }).then(safeJson);
 
 export const fetchPostJson = async ({
   url,
@@ -10,7 +30,7 @@ export const fetchPostJson = async ({
   options = {},
   nextOptions = {},
 }) =>
-  await fetch(url, {
+  await fetchWithTimeout(url, {
     ...options,
     next: { ...nextOptions },
     method: "POST",
@@ -18,7 +38,7 @@ export const fetchPostJson = async ({
       "content-type": "application/json",
     },
     body: JSON.stringify(payload),
-  }).then((r) => r.json());
+  }).then(safeJson);
 
 export const convertHtmlToText = (content) => {
   if (!content) return "";

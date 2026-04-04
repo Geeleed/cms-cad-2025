@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "SELECT * FROM articles WHERE id_article = $1",
+      "SELECT * FROM cadcenter.articles WHERE id_article = $1",
       [id_article]
     );
     if (!result.rows[0]) {
@@ -36,7 +36,7 @@ export async function PUT(request, { params }) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "UPDATE articles SET title=$1, description=$2, content=$3, updated_at=NOW() WHERE id_article=$4 RETURNING *",
+      "UPDATE cadcenter.articles SET title=$1, description=$2, content=$3, updated_at=NOW() WHERE id_article=$4 RETURNING *",
       [title, description ?? "", content, id_article]
     );
     return NextResponse.json({ auth: true, data: result.rows[0] });
@@ -55,7 +55,7 @@ export async function DELETE(request, { params }) {
   const { id_article } = await params;
   const conn = await pool.connect();
   try {
-    await conn.query("DELETE FROM articles WHERE id_article=$1", [id_article]);
+    await conn.query("DELETE FROM cadcenter.articles WHERE id_article=$1", [id_article]);
     return NextResponse.json({ auth: true, ok: true });
   } catch (error) {
     console.error("DELETE /api/resource/article/[id_article] error:", error);

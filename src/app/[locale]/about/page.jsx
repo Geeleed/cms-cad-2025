@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }) {
   const page_about = await load_page_about({ params });
+  if (!page_about.resource?.h2) return null;
   return (
     <div className="page-more-text page-about">
       <div className="page-more-text-container">
@@ -33,7 +34,7 @@ export default async function Page({ params }) {
               <p>{page_about.resource.p_1}</p>
               <p>{page_about.resource.p_2}</p>
             </section>
-            {page_about.resource.card.map((el, index) => (
+            {(page_about.resource.card || []).map((el, index) => (
               <section key={index}>
                 <h2>{el.h3} </h2>
                 <p>{el.p}</p>

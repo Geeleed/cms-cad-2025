@@ -8,7 +8,7 @@ export async function PUT(request, { params }) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "UPDATE news SET img_src=$1, title=$2, date=$3, href=$4 WHERE id=$5 RETURNING *",
+      "UPDATE cadcenter.news SET img_src=$1, title=$2, date=$3, href=$4 WHERE id=$5 RETURNING *",
       [img_src ?? "", title, date ?? "", href, id]
     );
     if (!result.rows[0]) {
@@ -28,7 +28,7 @@ export async function DELETE(request, { params }) {
   const { id } = await params;
   const conn = await pool.connect();
   try {
-    await conn.query("DELETE FROM news WHERE id=$1", [id]);
+    await conn.query("DELETE FROM cadcenter.news WHERE id=$1", [id]);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error(error);

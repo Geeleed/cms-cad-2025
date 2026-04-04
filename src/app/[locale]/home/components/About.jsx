@@ -29,7 +29,7 @@ export default function About({
       </FadeInWrapper>
       <div className="flex justify-center">
         <div className="flex gap-[16px] flex-wrap justify-center">
-          {aboutCard.map((el, index) => (
+          {(aboutCard || []).map((el, index) => (
             <FadeInWrapper delay={500 + 200 * index} key={el?.id || index}>
               <div className="card card-about">
                 <h3 className="title"><InlineText value={el.h3} resourceType={rt} resourceName={rn} fieldKey={`card.${index}.h3`} /></h3>

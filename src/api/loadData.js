@@ -14,7 +14,7 @@ export const load_system_word = async ({ params }) => {
     resource_type: "system_word",
     name: `system_word_${locale}`,
   });
-  return dictionay;
+  return dictionay?.resource ? dictionay : { resource: {} };
 };
 
 export const load_page_landing = async ({ params }) => {
@@ -22,7 +22,7 @@ export const load_page_landing = async ({ params }) => {
   const result = await fetchPostJson({
     url: apiPath.data_landing,
     payload: { locale },
-  });
+  }).catch(() => null);
   const {
     sectionHome,
     sectionBasicInfo,
@@ -35,7 +35,7 @@ export const load_page_landing = async ({ params }) => {
     sectionResources,
     sectionNews,
     sectionFooter,
-  } = result;
+  } = result ?? {};
 
   return {
     sectionHome,
@@ -59,7 +59,7 @@ export const load_page_team = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_about = async ({ params }) => {
@@ -69,7 +69,7 @@ export const load_page_about = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_services = async ({ params }) => {
@@ -79,7 +79,7 @@ export const load_page_services = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_doctor = async ({ params }) => {
@@ -89,7 +89,7 @@ export const load_page_doctor = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_approaches = async ({ params }) => {
@@ -99,7 +99,7 @@ export const load_page_approaches = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_resources = async ({ params }) => {
@@ -109,7 +109,7 @@ export const load_page_resources = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_page_news = async ({ params }) => {
@@ -119,9 +119,10 @@ export const load_page_news = async ({ params }) => {
     resource_type: page,
     name: `${page}_${locale}`,
   });
-  return result;
+  return result?.resource ? result : { resource: {} };
 };
 
 export const load_footer = async ({ locale }) => {
-  return await fetchPostJson({ url: apiPath.data_footer, payload: { locale } });
+  const result = await fetchPostJson({ url: apiPath.data_footer, payload: { locale } }).catch(() => null);
+  return result ?? {};
 };

@@ -18,7 +18,7 @@ export default async function Footer({ locale }) {
       />
       <p className="py-[12px] flex items-center justify-center">
         <InlineText
-          value={footerData.footer}
+          value={footerData?.footer}
           resourceType="value_setting"
           resourceName={`value_setting_${locale}`}
           fieldKey="footer"

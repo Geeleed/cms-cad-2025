@@ -30,7 +30,7 @@ export default function Doctor({
             </Link>
           </div>
           <div className="image max-[769px]:hidden">
-            <Image src={doctorImg} width={500} height={500} alt="หมอ ทรงภูมิ" />
+            <Image src={doctorImg} width={500} height={500} alt="หมอ ทรงภูมิ" sizes="(max-width: 769px) 0px, 500px" />
           </div>
         </div>
       </FadeInWrapper>

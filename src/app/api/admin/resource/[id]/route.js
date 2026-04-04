@@ -16,7 +16,7 @@ export async function GET(request, { params }) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "SELECT * FROM cad__resource WHERE id_resource = $1",
+      "SELECT * FROM cadcenter.cad__resource WHERE id_resource = $1",
       [id]
     );
     if (!result.rows[0]) {
@@ -41,7 +41,7 @@ export async function PUT(request, { params }) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "UPDATE cad__resource SET resource = $1, remark = $2 WHERE id_resource = $3 RETURNING *",
+      "UPDATE cadcenter.cad__resource SET resource = $1, remark = $2 WHERE id_resource = $3 RETURNING *",
       [JSON.stringify(resource), remark ?? "", id]
     );
     if (!result.rows[0]) {

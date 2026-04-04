@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import InlineText from "@/components/admin/InlineText";
 import Link from "next/link";
 import React from "react";
@@ -42,7 +43,7 @@ const CardNews = ({ imgSrc, title, date, href }) => {
     <div className="card-news">
       <Link href={href} target="_blank">
         <div className="img-container">
-          <img src={imgSrc} alt={title} />
+          <Image src={imgSrc} alt={title} fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover" }} />
         </div>
         <p className="title line-clamp-2">{title}</p>
         <p className="date line-clamp-1">{date}</p>

@@ -1025,6 +1025,7 @@ footer {
   box-shadow: 0 0 var(--d22);
   transition: box-shadow 300ms ease;
   .img-container {
+    position: relative;
     width: 100%;
     aspect-ratio: 1.62;
     overflow: hidden;

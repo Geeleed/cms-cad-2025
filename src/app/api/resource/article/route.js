@@ -5,7 +5,7 @@ export async function GET() {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "SELECT id_article, title, description, created_at FROM articles ORDER BY created_at DESC"
+      "SELECT id_article, title, description, created_at FROM cadcenter.articles ORDER BY created_at DESC"
     );
     return NextResponse.json(result.rows);
   } catch (error) {
@@ -24,7 +24,7 @@ export async function POST(request) {
   const conn = await pool.connect();
   try {
     const result = await conn.query(
-      "INSERT INTO articles (title, description, content) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO cadcenter.articles (title, description, content) VALUES ($1, $2, $3) RETURNING *",
       [title, description ?? "", content]
     );
     return NextResponse.json({ auth: true, data: result.rows[0] });

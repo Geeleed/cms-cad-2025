@@ -21,7 +21,7 @@ export async function GET(request) {
   try {
     if (type && name) {
       const result = await conn.query(
-        "SELECT * FROM cad__resource WHERE resource_type = $1 AND name = $2",
+        "SELECT * FROM cadcenter.cad__resource WHERE resource_type = $1 AND name = $2",
         [type, name]
       );
       if (!result.rows[0]) {
@@ -31,7 +31,7 @@ export async function GET(request) {
     }
 
     const result = await conn.query(
-      "SELECT id_resource, resource_type, name, remark FROM cad__resource ORDER BY resource_type, name"
+      "SELECT id_resource, resource_type, name, remark FROM cadcenter.cad__resource ORDER BY resource_type, name"
     );
     return NextResponse.json(result.rows);
   } catch (error) {

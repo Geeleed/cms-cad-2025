@@ -41,6 +41,7 @@ import Paragraph2 from "./components/Paragraph2";
 
 export default async function Page({ params }) {
   const page_services = await load_page_services({ params });
+  if (!page_services.resource?.title) return null;
   return (
     <div className="page-services">
       <div className="max-w-[1250px] mx-auto px-[2rem]">
@@ -60,7 +61,7 @@ export default async function Page({ params }) {
               />
             </figure>
           </FadeInWrapper>
-          {page_services.resource.content.map((el,index) => (
+          {(page_services.resource.content || []).map((el,index) => (
             <Paragraph2 key={el?.id||index} data={el} />
           ))}
         </div>

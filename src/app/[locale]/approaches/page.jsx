@@ -14,6 +14,7 @@ export default async function page({ params }) {
   // const d = approach.en;
   const page_approaches = await load_page_approaches({ params });
   const d = page_approaches.resource;
+  if (!d?.child) return null;
   const [sec_a, sec_b, sec_c] = d.child;
   let [a_p1, a_p2, a_p3, a_p4] = sec_a.child;
   let [teaching, table] = a_p3.child;

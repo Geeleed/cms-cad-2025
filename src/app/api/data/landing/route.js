@@ -3,14 +3,15 @@ import pool from "@/config/db";
 
 export async function POST(request) {
   const { locale } = await request.json();
-  const conn = await pool.connect();
+  let conn;
   try {
+    conn = await pool.connect();
     // Fetch news and articles in parallel with resource configs
     const newsPromise = conn.query(
-      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM news ORDER BY id DESC LIMIT 3"
+      "SELECT id, img_src AS \"imgSrc\", title, date, href FROM cadcenter.news ORDER BY id DESC LIMIT 3"
     );
     const articlesPromise = conn.query(
-      "SELECT id_article, title, description FROM articles ORDER BY created_at DESC LIMIT 3"
+      "SELECT id_article, title, description FROM cadcenter.articles ORDER BY created_at DESC LIMIT 3"
     );
 
     const resourceConfigs = [
@@ -32,7 +33,7 @@ export async function POST(request) {
     const values = resourceConfigs.flatMap((r) => [r.type, r.name]);
 
     const result = await conn.query(
-      `SELECT resource_type, name, resource FROM cad__resource WHERE (resource_type, name) IN (${placeholders})`,
+      `SELECT resource_type, name, resource FROM cadcenter.cad__resource WHERE (resource_type, name) IN (${placeholders})`,
       values
     );
 
@@ -68,7 +69,7 @@ export async function POST(request) {
         case "pageServices":
           returnResult.sectionServices = {
             servicesTitle: resData.title,
-            servicesCard: resData.content.map((c) => c.h2),
+            servicesCard: (resData.content || []).map((c) => c.h2),
           };
           break;
         case "sectionAbout":
@@ -80,7 +81,7 @@ export async function POST(request) {
         case "sectionTeam":
           returnResult.sectionTeam = {
             teamTitle: resData.title,
-            teamCard: resData.team.map((t) => ({
+            teamCard: (resData.team || []).map((t) => ({
               img: t.img, person_name: t.person_name, role: t.role, position: t.position,
             })),
           };
@@ -95,7 +96,7 @@ export async function POST(request) {
         case "sectionApproaches":
           returnResult.sectionApproaches = {
             approachesTitle: resData.content,
-            approachesCard: resData.child.map((c) => c.content),
+            approachesCard: (resData.child || []).map((c) => c.content),
           };
           break;
         case "sectionResources":
@@ -112,7 +113,10 @@ export async function POST(request) {
       returnResult.sectionNews.newsList = newsResult.rows;
     }
 
-    const articlesResult = await articlesPromise;
+    const articlesResult = await articlesPromise.catch((err) => {
+      console.error("articles query failed:", err);
+      return { rows: [] };
+    });
     if (returnResult.sectionResources) {
       returnResult.sectionResources.articlesList = articlesResult.rows;
     }
@@ -122,6 +126,6 @@ export async function POST(request) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });
   } finally {
-    conn.release();
+    conn?.release();
   }
 }
