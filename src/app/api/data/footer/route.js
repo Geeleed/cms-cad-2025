@@ -11,20 +11,8 @@ export async function POST(request) {
     );
     const res = result.rows[0]?.resource;
     if (!res) return NextResponse.json({}, { status: 404 });
-    const {
-      facebook_label, facebook_link,
-      line_label, line_link,
-      email_label, email_link,
-      tel_label, tel_link,
-      address, map, footer,
-    } = res;
-    const contact = {
-      facebook_label, facebook_link,
-      line_label, line_link,
-      email_label, email_link,
-      tel_label, tel_link,
-    };
-    return NextResponse.json({ address, contact, footer, map });
+    const { contacts, address, map, footer } = res;
+    return NextResponse.json({ address, contacts: contacts || [], footer, map });
   } catch (error) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });

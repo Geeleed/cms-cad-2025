@@ -8,6 +8,7 @@ import "keen-slider/keen-slider.min.css";
 import FadeInWrapper from "@/components/FadeInWrapper";
 import IconLeftFill from "@/components/icons/IconLeftFill";
 import IconRightFill from "@/components/icons/IconRightFill";
+import InlineText from "@/components/admin/InlineText";
 
 export default function Team({ teamTitle, teamCard, locale }) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -55,7 +56,7 @@ export default function Team({ teamTitle, teamCard, locale }) {
       <div className="flex flex-col justify-center items-center">
         <FadeInWrapper delay={100}>
           <div className="mb-[20px]">
-            <h2>{teamTitle}</h2>
+            <h2><InlineText value={teamTitle} resourceType="page_team" resourceName={`page_team_${locale}`} fieldKey="title" /></h2>
           </div>
         </FadeInWrapper>
 
@@ -79,9 +80,9 @@ export default function Team({ teamTitle, teamCard, locale }) {
                           />
                         </div>
                         <div className="text">
-                          <h3>{member.name}</h3>
-                          <p>{member.role}</p>
-                          {member.detail && <p>{member.detail}</p>}
+                          <h3><InlineText value={member.name} resourceType="page_team" resourceName={`page_team_${locale}`} fieldKey={`team.${idx}.person_name`} /></h3>
+                          <p><InlineText value={member.role} resourceType="page_team" resourceName={`page_team_${locale}`} fieldKey={`team.${idx}.role`} /></p>
+                          {member.detail && <p><InlineText value={member.detail} resourceType="page_team" resourceName={`page_team_${locale}`} fieldKey={`team.${idx}.position`} /></p>}
                         </div>
                       </div>
                     </Link>

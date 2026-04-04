@@ -1,5 +1,6 @@
 import FadeInWrapper from "@/components/FadeInWrapper";
 import IconAbout from "@/components/icons/IconAbout";
+import InlineText from "@/components/admin/InlineText";
 import Link from "next/link";
 import React from "react";
 
@@ -12,15 +13,17 @@ export default function About({
   aboutCard,
   locale,
 }) {
+  const rt = "page_about";
+  const rn = `page_about_${locale}`;
   return (
     <section className="section-about">
       <FadeInWrapper delay={100}>
         <div className="flex flex-col justify-center items-center">
-          <h2>{aboutTitle}</h2>
-          <h3 className="title">{aboutSubtitle}</h3>
+          <h2><InlineText value={aboutTitle} resourceType={rt} resourceName={rn} fieldKey="h2" /></h2>
+          <h3 className="title"><InlineText value={aboutSubtitle} resourceType={rt} resourceName={rn} fieldKey="h3" /></h3>
           <div className="max-w-[820px] text-center mb-[32px]">
-            <p className="small">{aboutP1}</p>
-            <p className="small mt-[18px]">{aboutP2}</p>
+            <p className="small"><InlineText value={aboutP1} resourceType={rt} resourceName={rn} fieldKey="p_1" multiline /></p>
+            <p className="small mt-[18px]"><InlineText value={aboutP2} resourceType={rt} resourceName={rn} fieldKey="p_2" multiline /></p>
           </div>
         </div>
       </FadeInWrapper>
@@ -29,10 +32,8 @@ export default function About({
           {aboutCard.map((el, index) => (
             <FadeInWrapper delay={500 + 200 * index} key={el?.id || index}>
               <div className="card card-about">
-                <h3 className="title">{el.h3}</h3>
-                <div className="line-clamp-2">
-                  <p>{el.p}</p>
-                </div>
+                <h3 className="title"><InlineText value={el.h3} resourceType={rt} resourceName={rn} fieldKey={`card.${index}.h3`} /></h3>
+                <p className="line-clamp-2"><InlineText value={el.p} resourceType={rt} resourceName={rn} fieldKey={`card.${index}.p`} multiline /></p>
                 <Link href={`/${locale}/about`}>
                   <div className="read-more">
                     {`${dictionary.read_more}...`}

@@ -19,7 +19,7 @@ export default async function page({ params }) {
   const page_home = await load_page_landing({ params });
   const {
     sectionHome: { h1_1, h1_2, p, img },
-    sectionBasicInfo: { contact, openHours, basicServices },
+    sectionBasicInfo: { contacts, openSchedule, basicServices },
     sectionWelcome: { welcomeTitle, welcomeP },
     sectionAbout: { aboutTitle, aboutSubtitle, aboutP1, aboutP2, aboutCard },
     sectionTeam: { teamTitle, teamCard },
@@ -34,12 +34,13 @@ export default async function page({ params }) {
   const dictionary = system_word.resource;
   return (
     <div className="page-home">
-      <Home h1_1={h1_1} h1_2={h1_2} p={p} img={img} />
+      <Home h1_1={h1_1} h1_2={h1_2} p={p} img={img} locale={locale} />
       <CardBasicInfo
-        contact={contact}
-        openHours={openHours}
+        contacts={contacts}
+        openSchedule={openSchedule}
         basicServices={basicServices}
         dictionary={dictionary}
+        locale={locale}
       />
       <div className="container-decoration-cad">
         <div className="decoration-cad text-(--c) rotate-12 left-[10rem] animate-up-down top-[2rem]">
@@ -49,7 +50,7 @@ export default async function page({ params }) {
           D
         </div>
       </div>
-      <Welcome welcomeTitle={welcomeTitle} welcomeP={welcomeP} />
+      <Welcome welcomeTitle={welcomeTitle} welcomeP={welcomeP} locale={locale} />
       <div className="container-decoration-cad">
         <div className="decoration-cad text-(--c) -rotate-6 left-[10rem] translate-y-[1rem] animate-up-down">
           A

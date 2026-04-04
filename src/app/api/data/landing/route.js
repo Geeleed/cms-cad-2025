@@ -46,23 +46,13 @@ export async function POST(request) {
           break;
         case "valueSetting":
           returnResult.sectionBasicInfo = {
-            contact: {
-              facebook_label: resData.facebook_label, facebook_link: resData.facebook_link,
-              line_label: resData.line_label, line_link: resData.line_link,
-              email_label: resData.email_label, email_link: resData.email_link,
-              tel_label: resData.tel_label, tel_link: resData.tel_link,
-            },
-            openHours: { days: resData.open_days, hours: resData.open_hours },
+            contacts: resData.contacts || [],
+            openSchedule: resData.open_schedule || [],
             basicServices: resData.my_services,
           };
           returnResult.sectionFooter = {
             address: resData.address,
-            contact: {
-              facebook_label: resData.facebook_label, facebook_link: resData.facebook_link,
-              line_label: resData.line_label, line_link: resData.line_link,
-              email_label: resData.email_label, email_link: resData.email_link,
-              tel_label: resData.tel_label, tel_link: resData.tel_link,
-            },
+            contacts: resData.contacts || [],
             footer: resData.footer,
             map: resData.map,
           };

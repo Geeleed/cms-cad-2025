@@ -1,4 +1,5 @@
 import { getArticleWithIdArticle } from "@/api/fetcher";
+import InlineArticleEdit from "@/components/admin/InlineArticleEdit";
 import React from "react";
 
 export default async function Page({ params }) {
@@ -17,7 +18,12 @@ export default async function Page({ params }) {
   return (
     <main className="py-[8rem]">
       <div className="max-w-[1250px] mx-auto w-full">
-        <div dangerouslySetInnerHTML={{ __html: result.content }} />
+        <InlineArticleEdit
+          id_article={id_article}
+          initialTitle={result.title}
+          initialDescription={result.description}
+          initialContent={result.content}
+        />
       </div>
     </main>
   );

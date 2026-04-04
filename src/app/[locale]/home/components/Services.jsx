@@ -2,6 +2,7 @@ import FadeInWrapper from "@/components/FadeInWrapper";
 import IconServices1 from "@/components/icons/IconServices1";
 import IconServices2 from "@/components/icons/IconServices2";
 import IconServices3 from "@/components/icons/IconServices3";
+import InlineText from "@/components/admin/InlineText";
 import Link from "next/link";
 import React from "react";
 
@@ -11,21 +12,19 @@ export default function Services({
   locale,
   dictionary,
 }) {
+  const rt = "page_services";
+  const rn = `page_services_${locale}`;
   return (
     <section className="section-services">
       <div className="flex justify-center">
         <FadeInWrapper delay={100}>
-          <h2>{servicesTitle}</h2>
+          <h2><InlineText value={servicesTitle} resourceType={rt} resourceName={rn} fieldKey="title" /></h2>
         </FadeInWrapper>
       </div>
-      {/* <div className="flex justify-center bg-(--a22) max-w-[1250px] w-full mx-auto rounded-[40px]"> */}
       <div className="card-container">
-        {/* {servicesCard.map((el, index) => (
-          <CardServices key={index} svg={<IconServices1 />} content={el} />
-        ))} */}
-        <CardServices svg={<IconServices1 />} content={servicesCard[0]} />
-        <CardServices svg={<IconServices2 />} content={servicesCard[1]} />
-        <CardServices svg={<IconServices3 />} content={servicesCard[2]} />
+        <CardServices svg={<IconServices1 />} content={<InlineText value={servicesCard[0]} resourceType={rt} resourceName={rn} fieldKey="content.0.h2" />} />
+        <CardServices svg={<IconServices2 />} content={<InlineText value={servicesCard[1]} resourceType={rt} resourceName={rn} fieldKey="content.1.h2" />} />
+        <CardServices svg={<IconServices3 />} content={<InlineText value={servicesCard[2]} resourceType={rt} resourceName={rn} fieldKey="content.2.h2" />} />
       </div>
       <div className="flex justify-center">
         <Link

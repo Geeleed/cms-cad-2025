@@ -1,30 +1,23 @@
-import IconCall from "@/components/icons/IconCall";
+"use client";
 import IconClock from "@/components/icons/IconClock";
-import IconFacebook from "@/components/icons/IconFacebook";
-import IconLine from "@/components/icons/IconLine";
-import IconMail from "@/components/icons/IconMail";
 import IconSmile from "@/components/icons/IconSmile";
-import Link from "next/link";
+import IconCall from "@/components/icons/IconCall";
+import InlineText from "@/components/admin/InlineText";
+import InlineList from "@/components/admin/InlineList";
+import InlineContactList from "@/components/admin/InlineContactList";
 import React from "react";
 
 export default function CardBasicInfo({
-  contact,
-  openHours,
+  contacts = [],
+  openSchedule = [],
   basicServices,
   dictionary,
+  locale,
 }) {
-  const {
-    facebook_label,
-    facebook_link,
-    line_label,
-    line_link,
-    email_label,
-    email_link,
-    tel_label,
-    tel_link,
-  } = contact;
   const services = basicServices;
   const dict = dictionary;
+  const rt = "value_setting";
+  const rn = `value_setting_${locale}`;
   return (
     <div className="card-basic-info">
       <div className="flex card gap-[20px] card-basic-info-container">
@@ -34,52 +27,13 @@ export default function CardBasicInfo({
           </div>
           <div>
             <TitleCard>{dict.contact_us}</TitleCard>
-            <p className="custom-text-1 text-(--neutral-600)">
-              <Link
-                // href={"https://www.facebook.com/cadautism"}
-                href={facebook_link}
-                target="_blank"
-                className="flex items-center gap-x-2"
-              >
-                <IconFacebook /> {facebook_label}
-              </Link>
-            </p>
-            <p className="custom-text-1 text-(--neutral-600)">
-              <Link
-                // href={"https://line.me/R/ti/p/~@cadcenter"}
-                href={line_link}
-                target="_blank"
-                className="flex items-center gap-x-2"
-              >
-                {/* <IconLine /> @cadcenter */}
-                <IconLine /> {line_label}
-              </Link>
-            </p>
-            <p className="custom-text-1 text-(--neutral-600)">
-              <Link
-                // href={"mailto:cadautism@gmail.com"}
-                href={`mailto:${email_link}`}
-                target="_blank"
-                className="flex items-center gap-x-2"
-              >
-                {/* <IconMail /> cadautism@gmail.com */}
-                <IconMail /> {email_label}
-              </Link>
-            </p>
-            <p className="custom-text-1 text-(--primary-1) mt-[8px]">
-              <Link
-                // href={"tel:0654962826"}
-                href={`tel:${tel_link}`}
-                className="flex items-center gap-x-2"
-              >
-                <IconCall />
-                {/* 065-496-2826 */}
-                {tel_label}
-              </Link>
-            </p>
-            {/* <Link className="button-primary small w-full mt-[8px]" href={"tel:0654962826"}>
-              065-496-2826
-            </Link> */}
+            <InlineContactList
+              values={contacts}
+              resourceType={rt}
+              resourceName={rn}
+              fieldKey="contacts"
+              telClass="text-(--primary-1) mt-[8px]"
+            />
           </div>
         </div>
         <div className="flex justify-center items-center mx-[20px] py-[8px]">
@@ -90,14 +44,16 @@ export default function CardBasicInfo({
             <IconClock />
           </div>
           <div>
-            {/* <TitleCard>Open Hours</TitleCard> */}
             <TitleCard>{dict.open_hours}</TitleCard>
-            <p className="custom-text-1 text-(--neutral-600)">
-              {openHours.days}
-            </p>
-            <p className="custom-text-1 text-(--neutral-600)">
-              {openHours.hours}
-            </p>
+            <InlineList
+              values={openSchedule}
+              resourceType={rt}
+              resourceName={rn}
+              fieldKey="open_schedule"
+              renderItem={(item, i) => (
+                <p key={i} className="custom-text-1 text-(--neutral-600)">{item}</p>
+              )}
+            />
           </div>
         </div>
         <div className="flex justify-center items-center mx-[20px] py-[8px]">
@@ -110,18 +66,15 @@ export default function CardBasicInfo({
           <div>
             {/* <TitleCard>Services</TitleCard> */}
             <TitleCard>{dict.services}</TitleCard>
-            {services.map((el, index) => (
-              <p key={index} className="custom-text-1 text-(--neutral-600)">
-                {el}
-              </p>
-            ))}
-            {/* <p className="custom-text-1 text-(--neutral-600)">
-              Language & Behavior Room
-            </p>
-            <p className="custom-text-1 text-(--neutral-600)">
-              Parent Training
-            </p>
-            <p className="custom-text-1 text-(--neutral-600)">Consultation</p> */}
+            <InlineList
+              values={services}
+              resourceType={rt}
+              resourceName={rn}
+              fieldKey="my_services"
+              renderItem={(item, i) => (
+                <p key={i} className="custom-text-1 text-(--neutral-600)">{item}</p>
+              )}
+            />
           </div>
         </div>
       </div>

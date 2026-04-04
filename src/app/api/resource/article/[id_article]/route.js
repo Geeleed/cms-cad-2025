@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import pool from "@/config/db";
+import { verifyToken, COOKIE_NAME } from "@/lib/auth.server";
+
+function isAuthorized(request) {
+  const token = request.cookies.get(COOKIE_NAME)?.value;
+  return verifyToken(token);
+}
 
 export async function GET(request, { params }) {
   const { id_article } = await params;
@@ -22,11 +28,11 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-  const { id_article } = await params;
-  const { title, description, content, password } = await request.json();
-  if (password !== process.env.PASSWORD_POST_ARTICLE) {
-    return NextResponse.json({ auth: false });
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ auth: false }, { status: 401 });
   }
+  const { id_article } = await params;
+  const { title, description, content } = await request.json();
   const conn = await pool.connect();
   try {
     const result = await conn.query(
@@ -43,11 +49,10 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  const { id_article } = await params;
-  const { password } = await request.json();
-  if (password !== process.env.PASSWORD_POST_ARTICLE) {
-    return NextResponse.json({ auth: false });
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ auth: false }, { status: 401 });
   }
+  const { id_article } = await params;
   const conn = await pool.connect();
   try {
     await conn.query("DELETE FROM articles WHERE id_article=$1", [id_article]);

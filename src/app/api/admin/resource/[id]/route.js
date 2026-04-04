@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
 import pool from "@/config/db";
+import { verifyToken, COOKIE_NAME } from "@/lib/auth.server";
+
+function isAuthorized(request) {
+  const token = request.cookies.get(COOKIE_NAME)?.value;
+  return verifyToken(token);
+}
 
 // GET /api/admin/resource/[id] — get full resource with data
 export async function GET(request, { params }) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const { id } = await params;
   const conn = await pool.connect();
   try {
@@ -24,6 +33,9 @@ export async function GET(request, { params }) {
 
 // PUT /api/admin/resource/[id] — update resource content
 export async function PUT(request, { params }) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const { id } = await params;
   const { resource, remark } = await request.json();
   const conn = await pool.connect();
