@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import FadeInWrapper from "@/components/FadeInWrapper";
 import InlineText from "@/components/admin/InlineText";
+import InlineImage from "@/components/admin/InlineImage";
 
 export default function Home({ h1_1, h1_2, p, img, locale }) {
   const rt = "page_landing";
@@ -29,15 +30,17 @@ export default function Home({ h1_1, h1_2, p, img, locale }) {
       <div className="right">
         <FadeInWrapper>
           <div className="image">
-            <Image
-              className="w-full"
-              src={img}
-              width={1000}
-              height={1000}
-              alt="CAD center team"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
+            <InlineImage value={img} resourceType={rt} resourceName={rn} fieldKey="img">
+              <Image
+                className="w-full"
+                src={img}
+                width={1000}
+                height={1000}
+                alt="CAD center team"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </InlineImage>
           </div>
         </FadeInWrapper>
       </div>

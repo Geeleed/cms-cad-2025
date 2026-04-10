@@ -8,7 +8,15 @@ ConfigProvider.config({
 
 export default function AntdProvider({ children }) {
   return (
-    <ConfigProvider warning={{ strict: false }}>
+    <ConfigProvider
+      warning={{ strict: false }}
+      theme={{
+        token: {
+          fontFamily: '"Prompt", "IBM Plex Sans", Arial, sans-serif',
+          colorPrimary: "#FA5456",
+        },
+      }}
+    >
       {children}
     </ConfigProvider>
   );

@@ -172,7 +172,7 @@ export default function InlineArticleEdit({
       )}
 
       {/* Normal read-only view */}
-      <div dangerouslySetInnerHTML={{ __html: initialContent }} />
+      <div className="editor-content" dangerouslySetInnerHTML={{ __html: initialContent }} />
     </div>
   );
 }

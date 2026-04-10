@@ -22,7 +22,7 @@ import {
 import { ColorPicker, Divider, Dropdown, Select, Tooltip } from "antd";
 import React, { useRef } from "react";
 
-function Btn({ title, onClick, children }) {
+function Btn({ title, onClick, active, children }) {
   return (
     <Tooltip title={title}>
       <button
@@ -34,7 +34,7 @@ function Btn({ title, onClick, children }) {
         style={{
           padding: "4px 7px",
           border: "none",
-          background: "transparent",
+          background: active ? "#d6e4ff" : "transparent",
           borderRadius: 4,
           cursor: "pointer",
           display: "flex",
@@ -42,13 +42,17 @@ function Btn({ title, onClick, children }) {
           justifyContent: "center",
           fontSize: 14,
           lineHeight: 1,
-          color: "inherit",
+          color: active ? "#1677ff" : "inherit",
           minWidth: 28,
           minHeight: 28,
           transition: "background 0.15s",
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "#e8e8e8")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+        onMouseEnter={(e) => {
+          if (!active) e.currentTarget.style.background = "#e8e8e8";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = active ? "#d6e4ff" : "transparent";
+        }}
       >
         {children}
       </button>
@@ -85,8 +89,9 @@ const fontSizeOptions = [
   { value: "48px", label: "48" },
 ];
 
-export default function ArticleToolbar({ useAction, color, onColorChange }) {
+export default function ArticleToolbar({ useAction, color, onColorChange, activeBlockType, activeFontFamily, activeFontSize }) {
   const imageInputRef = useRef();
+  const { isActive } = useAction;
 
   const onSetLink = () => {
     const url = window.prompt("URL:");
@@ -119,25 +124,27 @@ export default function ArticleToolbar({ useAction, color, onColorChange }) {
       <Sep />
 
       {/* Block type */}
-      <Select
-        size="small"
-        defaultValue="paragraph"
-        style={{ width: 120 }}
-        onMouseDown={(e) => e.stopPropagation()}
-        onChange={(val) => {
-          if (val === "paragraph") useAction.setParagraph();
-          else useAction.setHeading(Number(val));
-        }}
-        options={[
-          { value: "paragraph", label: "Paragraph" },
-          { value: "1", label: "Heading 1" },
-          { value: "2", label: "Heading 2" },
-          { value: "3", label: "Heading 3" },
-          { value: "4", label: "Heading 4" },
-          { value: "5", label: "Heading 5" },
-          { value: "6", label: "Heading 6" },
-        ]}
-      />
+      {[
+        { value: "paragraph", label: "P" },
+        { value: "1", label: "H1" },
+        { value: "2", label: "H2" },
+        { value: "3", label: "H3" },
+        { value: "4", label: "H4" },
+        { value: "5", label: "H5" },
+        { value: "6", label: "H6" },
+      ].map(({ value, label }) => (
+        <Btn
+          key={value}
+          title={value === "paragraph" ? "Paragraph" : `Heading ${value}`}
+          active={activeBlockType === value}
+          onClick={() => {
+            if (value === "paragraph") useAction.setParagraph();
+            else useAction.setHeading(Number(value));
+          }}
+        >
+          <span style={{ fontSize: 12, fontWeight: 600 }}>{label}</span>
+        </Btn>
+      ))}
 
       <Sep />
 
@@ -146,45 +153,38 @@ export default function ArticleToolbar({ useAction, color, onColorChange }) {
         size="small"
         placeholder="Font"
         allowClear
+        value={activeFontFamily}
         style={{ width: 130 }}
         onMouseDown={(e) => e.stopPropagation()}
-        onChange={(font) => font && useAction.setFontFamily(font)}
+        onChange={(font) => {
+          if (font) useAction.setFontFamily(font);
+          else useAction.unsetFontFamily();
+        }}
         options={fontFamilyOptions}
-      />
-
-      {/* Font size */}
-      <Select
-        size="small"
-        placeholder="Size"
-        allowClear
-        style={{ width: 72 }}
-        onMouseDown={(e) => e.stopPropagation()}
-        onChange={(size) => size && useAction.setFontSize(size)}
-        options={fontSizeOptions}
       />
 
       <Sep />
 
       {/* Text formatting */}
-      <Btn title="Bold (Ctrl+B)" onClick={useAction.toggleBold}>
+      <Btn title="Bold (Ctrl+B)" active={isActive("bold")} onClick={useAction.toggleBold}>
         <BoldOutlined />
       </Btn>
-      <Btn title="Italic (Ctrl+I)" onClick={useAction.toggleItalic}>
+      <Btn title="Italic (Ctrl+I)" active={isActive("italic")} onClick={useAction.toggleItalic}>
         <ItalicOutlined />
       </Btn>
-      <Btn title="Underline (Ctrl+U)" onClick={useAction.toggleUnderline}>
+      <Btn title="Underline (Ctrl+U)" active={isActive("underline")} onClick={useAction.toggleUnderline}>
         <UnderlineOutlined />
       </Btn>
-      <Btn title="Strikethrough" onClick={useAction.toggleStrike}>
+      <Btn title="Strikethrough" active={isActive("strike")} onClick={useAction.toggleStrike}>
         <StrikethroughOutlined />
       </Btn>
-      <Btn title="Highlight" onClick={useAction.toggleHighlight}>
+      <Btn title="Highlight" active={isActive("highlight")} onClick={useAction.toggleHighlight}>
         <HighlightOutlined />
       </Btn>
-      <Btn title="Subscript" onClick={useAction.toggleSubscript}>
+      <Btn title="Subscript" active={isActive("subscript")} onClick={useAction.toggleSubscript}>
         <span style={{ fontSize: 11 }}>x<sub>2</sub></span>
       </Btn>
-      <Btn title="Superscript" onClick={useAction.toggleSuperscript}>
+      <Btn title="Superscript" active={isActive("superscript")} onClick={useAction.toggleSuperscript}>
         <span style={{ fontSize: 11 }}>x<sup>2</sup></span>
       </Btn>
 
@@ -204,33 +204,33 @@ export default function ArticleToolbar({ useAction, color, onColorChange }) {
       <Sep />
 
       {/* Alignment */}
-      <Btn title="Align Left" onClick={useAction.setTextAlignLeft}>
+      <Btn title="Align Left" active={isActive({ textAlign: "left" })} onClick={useAction.setTextAlignLeft}>
         <AlignLeftOutlined />
       </Btn>
-      <Btn title="Align Center" onClick={useAction.setTextAlignCenter}>
+      <Btn title="Align Center" active={isActive({ textAlign: "center" })} onClick={useAction.setTextAlignCenter}>
         <AlignCenterOutlined />
       </Btn>
-      <Btn title="Align Right" onClick={useAction.setTextAlignRight}>
+      <Btn title="Align Right" active={isActive({ textAlign: "right" })} onClick={useAction.setTextAlignRight}>
         <AlignRightOutlined />
       </Btn>
-      <Btn title="Justify" onClick={useAction.setTextAlignJustify}>
+      <Btn title="Justify" active={isActive({ textAlign: "justify" })} onClick={useAction.setTextAlignJustify}>
         <MenuOutlined />
       </Btn>
 
       <Sep />
 
       {/* Lists */}
-      <Btn title="Bullet List" onClick={useAction.toggleBulletList}>
+      <Btn title="Bullet List" active={isActive("bulletList")} onClick={useAction.toggleBulletList}>
         <UnorderedListOutlined />
       </Btn>
-      <Btn title="Ordered List" onClick={useAction.toggleOrderedList}>
+      <Btn title="Ordered List" active={isActive("orderedList")} onClick={useAction.toggleOrderedList}>
         <OrderedListOutlined />
       </Btn>
 
       <Sep />
 
       {/* Link & HR */}
-      <Btn title="Insert Link" onClick={onSetLink}>
+      <Btn title="Insert Link" active={isActive("link")} onClick={onSetLink}>
         <LinkOutlined />
       </Btn>
       <Btn title="Horizontal Rule" onClick={useAction.setHorizontalRule}>

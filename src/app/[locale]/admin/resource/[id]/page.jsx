@@ -27,6 +27,7 @@ export default function ResourceEditorPage({ params }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [siblingId, setSiblingId] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
   const locale = pathname.split("/")[1] ?? "th";
@@ -34,11 +35,23 @@ export default function ResourceEditorPage({ params }) {
   useEffect(() => {
     params.then(({ id: paramId }) => {
       setId(paramId);
+      setSiblingId(null);
       fetch(`/api/admin/resource/${paramId}`)
         .then((r) => r.json())
         .then((data) => {
           setRow(data);
           setResource(data.resource);
+          // Find sibling with opposite lang suffix
+          const name = data.name ?? "";
+          const langMatch = name.match(/_(en|th)$/);
+          if (langMatch) {
+            const siblingLang = langMatch[1] === "en" ? "th" : "en";
+            const siblingName = name.replace(/_(en|th)$/, `_${siblingLang}`);
+            fetch(`/api/admin/resource?type=${data.resource_type}&name=${siblingName}`)
+              .then((r) => r.ok ? r.json() : null)
+              .then((sib) => { if (sib?.id_resource) setSiblingId({ id: sib.id_resource, lang: siblingLang }); })
+              .catch(() => {});
+          }
         })
         .catch(() => setError("ไม่สามารถโหลดข้อมูลได้"))
         .finally(() => setLoading(false));
@@ -71,6 +84,7 @@ export default function ResourceEditorPage({ params }) {
   if (loading) return <Spin size="large" style={{ display: "block", margin: "80px auto" }} />;
 
   const typeInfo = TYPE_LABELS[row?.resource_type];
+  const currentLang = (row?.name ?? "").match(/_(en|th)$/)?.[1];
 
   return (
     <div style={{ maxWidth: 900 }}>
@@ -84,7 +98,24 @@ export default function ResourceEditorPage({ params }) {
         title={
           <Space>
             <Tag color={typeInfo?.color ?? "default"}>{typeInfo?.label ?? row?.resource_type}</Tag>
-            <Typography.Text strong>{row?.name}</Typography.Text>
+            <Typography.Text strong>{row?.name?.replace(/_(en|th)$/, "") ?? row?.name}</Typography.Text>
+            {currentLang && siblingId && (
+              <Space size={4}>
+                {["th", "en"].map((l) => (
+                  <Button
+                    key={l}
+                    size="small"
+                    type={currentLang === l ? "primary" : "default"}
+                    style={{ minWidth: 36, fontWeight: 600, fontSize: 12 }}
+                    onClick={() => {
+                      if (currentLang !== l) router.push(`/${locale}/admin/resource/${siblingId.id}`);
+                    }}
+                  >
+                    {l.toUpperCase()}
+                  </Button>
+                ))}
+              </Space>
+            )}
           </Space>
         }
         extra={

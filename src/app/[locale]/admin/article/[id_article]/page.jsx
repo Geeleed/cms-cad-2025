@@ -20,7 +20,7 @@ export default function ArticleEditPage() {
   const [saving, setSaving] = useState(false);
   const [pendingContent, setPendingContent] = useState(null);
 
-  const { useAction, preview, EditorZone, onSetInitHtmlContent, editorReady } = useBlogger();
+  const { useAction, preview, EditorZone, onSetInitHtmlContent, editorReady, activeBlockType, activeFontFamily, activeFontSize } = useBlogger();
 
   // Fetch article data
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function ArticleEditPage() {
 
       {/* Editor container */}
       <div style={{ border: "1px solid #d9d9d9", borderRadius: 8, overflow: "hidden" }}>
-        <ArticleToolbar useAction={useAction} color={color} onColorChange={onColorChange} />
+        <ArticleToolbar useAction={useAction} color={color} onColorChange={onColorChange} activeBlockType={activeBlockType} activeFontFamily={activeFontFamily} activeFontSize={activeFontSize} />
         <div style={{ padding: "16px 20px", minHeight: 400, background: "#fff" }}>
           {EditorZone}
         </div>

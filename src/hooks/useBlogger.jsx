@@ -4,21 +4,17 @@ import TableRow from "@tiptap/extension-table-row";
 import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
 import Color from "@tiptap/extension-color";
-import HardBreak from "@tiptap/extension-hard-break";
 import Highlight from "@tiptap/extension-highlight";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import Link from "@tiptap/extension-link";
-import Strike from "@tiptap/extension-strike";
 import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useState, useRef, useEffect } from "react";
 import { Mark, Node, mergeAttributes } from "@tiptap/core";
-import { NodeViewRendererProps } from "@tiptap/core";
 import {
   NodeViewWrapper,
   NodeViewContent,
@@ -380,16 +376,13 @@ export default function useBlogger() {
     extensions: [
       StarterKit,
       Underline,
-      Strike,
       Highlight,
       TextStyle,
       FontSize,
       FontFamily,
       Color,
-      Link,
+      Link.configure({ openOnClick: false, autolink: false }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      HorizontalRule,
-      HardBreak,
       Subscript,
       Superscript,
       ImageWithResize,
@@ -399,6 +392,11 @@ export default function useBlogger() {
       CustomTableHeader,
     ],
     content: initHtmlContent,
+    editorProps: {
+      transformPastedHTML(html) {
+        return html.replace(/font-family\s*:[^;\"\']+[;\"\']/gi, "");
+      },
+    },
   });
 
   const onResetContent = () => {
@@ -440,11 +438,16 @@ export default function useBlogger() {
     editor.chain().focus().setHeading({ level }).run();
   const setFontSize = (size = "16px") =>
     editor.chain().focus().setFontSize(size).run();
+  const unsetFontSize = () =>
+    editor?.chain().focus().unsetMark("fontSize").run();
   const setFontFamily = (font = "IBM Plex Sans, sans-serif") =>
     editor.chain().focus().setFontFamily(font).run();
+  const unsetFontFamily = () =>
+    editor?.chain().focus().unsetMark("fontFamily").run();
   const undo = () => editor?.chain().focus().undo().run();
   const redo = () => editor?.chain().focus().redo().run();
-  const resetAttributes = () => editor?.chain().focus().resetAttributes().run();
+  const resetAttributes = () =>
+    editor?.chain().focus().clearNodes().unsetAllMarks().run();
   const getJSON = () => editor?.getJSON();
   const getText = () => editor?.getText();
   const getHTML = () => editor?.getHTML();
@@ -464,12 +467,17 @@ export default function useBlogger() {
   };
 
   const alignSelectedImage = (align = "center") => {
-    const { state, view } = editor;
+    const { state } = editor;
     const { selection } = state;
-    const { from } = selection;
 
-    const node = state.doc.nodeAt(from);
+    // NodeSelection: image is directly selected
+    if (selection.node?.type.name === "customImage") {
+      editor.commands.updateAttributes("customImage", { align });
+      return;
+    }
 
+    // Fallback: check nodeAt cursor position
+    const node = state.doc.nodeAt(selection.from);
     if (node?.type.name === "customImage") {
       editor.commands.updateAttributes("customImage", { align });
     }
@@ -489,9 +497,27 @@ export default function useBlogger() {
   const splitCell = () => editor?.chain().focus().splitCell().run();
   const toggleHeaderRow = () => editor?.chain().focus().toggleHeaderRow().run();
   const isInTable = () => editor?.isActive("table") ?? false;
+  const isActive = (name, attrs) => editor?.isActive(name, attrs) ?? false;
+
+  // Reactive active-state values via useEditorState (properly subscribes to selection/content changes)
+  const { activeBlockType, activeFontFamily, activeFontSize, activeColor } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => {
+      let blockType = "paragraph";
+      for (let i = 1; i <= 6; i++) {
+        if (e?.isActive("heading", { level: i })) { blockType = String(i); break; }
+      }
+      return {
+        activeBlockType: blockType,
+        activeFontFamily: e?.getAttributes("fontFamily")?.style || "Prompt, sans-serif",
+        activeFontSize: e?.getAttributes("fontSize")?.style || undefined,
+        activeColor: e?.getAttributes("textStyle")?.color || "#000000",
+      };
+    },
+  });
 
   const preview = (
-    <div dangerouslySetInnerHTML={{ __html: editor?.getHTML() }} />
+    <div className="editor-content" dangerouslySetInnerHTML={{ __html: editor?.getHTML() }} />
   );
 
   const useAction = {
@@ -517,7 +543,9 @@ export default function useBlogger() {
     setParagraph,
     setHeading,
     setFontSize,
+    unsetFontSize,
     setFontFamily,
+    unsetFontFamily,
     undo,
     redo,
     resetAttributes,
@@ -538,6 +566,7 @@ export default function useBlogger() {
     splitCell,
     toggleHeaderRow,
     isInTable,
+    isActive,
   };
   const EditorZone = <EditorContent editor={editor} className={className} />;
 
@@ -557,5 +586,9 @@ export default function useBlogger() {
     onSetClassName,
     onSetInitHtmlContent: setInitHtmlContent,
     editorReady: !!editor,
+    activeBlockType,
+    activeFontFamily,
+    activeFontSize,
+    activeColor,
   };
 }

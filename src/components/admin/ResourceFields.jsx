@@ -3,6 +3,7 @@
 import { Input, Collapse, Button } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import dynamic from "next/dynamic";
+import { useRef } from "react";
 
 const TiptapField = dynamic(() => import("./TiptapField"), { ssr: false });
 
@@ -19,20 +20,76 @@ function isUrl(key) {
   return URL_KEYS.has(key) || key.endsWith("_link") || key.endsWith("_src") || key === "map";
 }
 
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function isImgKey(key) {
+  return key === "img" || key === "imgSrc" || key === "img_src" || key === "src";
+}
+
+function UrlField({ fieldKey, value, onChange }) {
+  const fileInputRef = useRef();
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const base64 = await fileToBase64(file);
+      onChange(base64);
+    } catch {
+      // silently ignore
+    }
+    e.target.value = "";
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://..."
+          addonBefore="URL"
+          style={{ flex: 1 }}
+        />
+        {isImgKey(fieldKey) && (
+          <>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+            <Button onClick={() => fileInputRef.current?.click()}>📁 อัปโหลด</Button>
+          </>
+        )}
+      </div>
+      {isImgKey(fieldKey) && value && (
+        <img
+          src={value}
+          alt="preview"
+          style={{ maxHeight: 160, maxWidth: "100%", objectFit: "contain", borderRadius: 6, border: "1px solid #eee", background: "#fafafa" }}
+          onError={(e) => { e.target.style.display = "none"; }}
+        />
+      )}
+    </div>
+  );
+}
+
 function FieldEditor({ fieldKey, value, onChange }) {
   if (typeof value === "string") {
     if (isRichText(fieldKey)) {
       return <TiptapField value={value} onChange={onChange} />;
     }
     if (isUrl(fieldKey)) {
-      return (
-        <Input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="https://..."
-          addonBefore="URL"
-        />
-      );
+      return <UrlField fieldKey={fieldKey} value={value} onChange={onChange} />;
     }
     return (
       <Input

@@ -15,14 +15,12 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [color, setColor] = useState("#000000");
   const [submitting, setSubmitting] = useState(false);
 
-  const { useAction, preview, EditorZone } = useBlogger();
+  const { useAction, preview, EditorZone, activeBlockType, activeFontFamily, activeFontSize, activeColor } = useBlogger();
 
   const onColorChange = (e) => {
     const hex = convert_rgba_to_hex({ ...e.metaColor });
-    setColor(hex);
     useAction.setColor(hex);
   };
 
@@ -80,7 +78,14 @@ export default function Page() {
 
       {/* Editor container */}
       <div style={{ border: "1px solid #d9d9d9", borderRadius: 8, overflow: "hidden" }}>
-        <ArticleToolbar useAction={useAction} color={color} onColorChange={onColorChange} />
+        <ArticleToolbar
+          useAction={useAction}
+          color={activeColor}
+          onColorChange={onColorChange}
+          activeBlockType={activeBlockType}
+          activeFontFamily={activeFontFamily}
+          activeFontSize={activeFontSize}
+        />
         <div style={{ padding: "16px 20px", minHeight: 400, background: "#fff" }}>
           {EditorZone}
         </div>
