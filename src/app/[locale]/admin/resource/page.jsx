@@ -7,8 +7,6 @@ import { useRouter, usePathname } from "next/navigation";
 const TYPE_ORDER = [
   "page_landing",
   "page_about",
-  "page_team",
-  "page_doctor",
   "page_services",
   "page_approaches",
   "page_resources",
@@ -18,12 +16,13 @@ const TYPE_ORDER = [
   "resource_video",
 ];
 
+// Types managed in the dedicated Team page — excluded here
+const TEAM_TYPES = new Set(["page_team", "page_doctor"]);
+
 const TYPE_LABELS = {
   page_landing: { label: "Landing", color: "blue" },
   page_about: { label: "About", color: "green" },
   page_services: { label: "Services", color: "purple" },
-  page_team: { label: "Team", color: "orange" },
-  page_doctor: { label: "Doctor", color: "red" },
   page_approaches: { label: "Approaches", color: "cyan" },
   page_resources: { label: "Resources", color: "magenta" },
   page_news: { label: "News Page", color: "gold" },
@@ -104,8 +103,9 @@ export default function ResourceListPage() {
 
   const filtered = data.filter(
     (r) =>
-      (r.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
-      r.resource_type.toLowerCase().includes(search.toLowerCase())
+      !TEAM_TYPES.has(r.resource_type) &&
+      ((r.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+        r.resource_type.toLowerCase().includes(search.toLowerCase()))
   );
 
   // Group by resource_type, sorted by TYPE_ORDER
@@ -126,7 +126,7 @@ export default function ResourceListPage() {
 
   return (
     <div>
-      <Typography.Title level={3} style={{ marginBottom: 16 }}>
+      <Typography.Title level={4} style={{ marginBottom: 16 }}>
         จัดการเนื้อหาหน้าเว็บ
       </Typography.Title>
       <Input.Search

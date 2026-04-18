@@ -1,11 +1,15 @@
 "use client";
 import { Card, Row, Col, Typography } from "antd";
-import { FileTextOutlined, PictureOutlined, ReadOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { Grid } from "antd";
+import { FileTextOutlined, PictureOutlined, ReadOutlined, VideoCameraOutlined, TeamOutlined } from "@ant-design/icons";
 import { useRouter, usePathname } from "next/navigation";
+
+const { useBreakpoint } = Grid;
 
 export default function AdminDashboard() {
   const router = useRouter();
   const pathname = usePathname();
+  const screens = useBreakpoint();
   const locale = pathname.split("/")[1] ?? "th";
   const base = `/${locale}/admin`;
 
@@ -13,8 +17,14 @@ export default function AdminDashboard() {
     {
       icon: <FileTextOutlined style={{ fontSize: 32, color: "#1677ff" }} />,
       title: "จัดการเนื้อหาหน้าเว็บ",
-      desc: "แก้ไข Landing, About, Services, Team, Doctor, Approaches, Contact",
+      desc: "แก้ไข Landing, About, Services, Approaches, Contact",
       path: `${base}/resource`,
+    },
+    {
+      icon: <TeamOutlined style={{ fontSize: 32, color: "#eb2f96" }} />,
+      title: "จัดการทีมงาน",
+      desc: "แก้ไขข้อมูลแพทย์และทีมงานที่แสดงในเว็บไซต์",
+      path: `${base}/team`,
     },
     {
       icon: <PictureOutlined style={{ fontSize: 32, color: "#52c41a" }} />,
@@ -38,18 +48,18 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <Typography.Title level={3} style={{ marginBottom: 24 }}>
+      <Typography.Title level={screens.xs ? 4 : 3} style={{ marginBottom: 16 }}>
         Dashboard
       </Typography.Title>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} align="stretch">
         {cards.map((card) => (
-          <Col xs={24} sm={12} lg={8} key={card.path}>
+          <Col xs={24} sm={12} lg={8} key={card.path} style={{ display: "flex" }}>
             <Card
               hoverable
               onClick={() => router.push(card.path)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", width: "100%" }}
             >
-              <div style={{ marginBottom: 12 }}>{card.icon}</div>
+              <div style={{ marginBottom: 8 }}>{card.icon}</div>
               <Typography.Title level={5} style={{ margin: 0 }}>
                 {card.title}
               </Typography.Title>

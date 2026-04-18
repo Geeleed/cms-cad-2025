@@ -9,8 +9,6 @@ const TYPE_LABELS = {
   page_landing: { label: "Landing", color: "blue" },
   page_about: { label: "About", color: "green" },
   page_services: { label: "Services", color: "purple" },
-  page_team: { label: "Team", color: "orange" },
-  page_doctor: { label: "Doctor", color: "red" },
   page_approaches: { label: "Approaches", color: "cyan" },
   page_resources: { label: "Resources", color: "magenta" },
   page_news: { label: "News Page", color: "gold" },
@@ -108,7 +106,9 @@ export default function ResourceEditorPage({ params }) {
                     type={currentLang === l ? "primary" : "default"}
                     style={{ minWidth: 36, fontWeight: 600, fontSize: 12 }}
                     onClick={() => {
-                      if (currentLang !== l) router.push(`/${locale}/admin/resource/${siblingId.id}`);
+                      if (currentLang !== l) {
+                        router.push(`/${locale}/admin/resource/${siblingId.id}`);
+                      }
                     }}
                   >
                     {l.toUpperCase()}

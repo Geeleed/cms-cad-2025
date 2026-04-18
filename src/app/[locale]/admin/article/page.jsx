@@ -109,12 +109,14 @@ export default function ArticleAdminPage() {
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           alignItems: "center",
+          gap: 12,
           marginBottom: 16,
         }}
       >
-        <Title level={3} style={{ margin: 0 }}>
+        <Title level={4} style={{ margin: 0 }}>
           จัดการบทความ
         </Title>
         <Button
@@ -131,6 +133,7 @@ export default function ArticleAdminPage() {
         dataSource={articles}
         loading={loading}
         pagination={{ pageSize: 20 }}
+        scroll={{ x: 600 }}
       />
     </div>
   );

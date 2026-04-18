@@ -123,8 +123,8 @@ export default function NewsPage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <Typography.Title level={3} style={{ margin: 0 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 16 }}>
+        <Typography.Title level={4} style={{ margin: 0 }}>
           จัดการข่าว
         </Typography.Title>
         <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
@@ -132,7 +132,7 @@ export default function NewsPage() {
         </Button>
       </div>
 
-      <Table rowKey="id" columns={columns} dataSource={data} loading={loading} pagination={{ pageSize: 10 }} />
+      <Table rowKey="id" columns={columns} dataSource={data} loading={loading} pagination={{ pageSize: 10 }} scroll={{ x: 600 }} />
 
       <Modal
         open={modalOpen}
