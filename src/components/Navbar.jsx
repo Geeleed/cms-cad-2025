@@ -48,7 +48,14 @@ export default function Navbar() {
 
   const [isOpenNavPage, setIsOpenNavPage] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -59,17 +66,18 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="bg-white w-full drop-shadow-(--main-drop-shadow) max-[769px]:px-8 relative z-[100]"
+        className="bg-white w-full drop-shadow-(--main-drop-shadow) max-[769px]:px-8 sticky top-0 z-[100] transition-all duration-300"
         id="nav"
         data-main-navbar
       >
-        <div className="max-w-[1250px] w-full mx-auto flex items-center justify-between py-[28px] min-[1024px]:px-[28px] min-[1440px]:px-0 min-[700px]:px-[2rem]">
+        <div className={`max-w-[1250px] w-full mx-auto flex items-center justify-between min-[1024px]:px-[28px] min-[1440px]:px-0 min-[700px]:px-[2rem] transition-all duration-300 ${scrolled ? "py-[10px]" : "py-[28px]"}`}>
           <Link href={`/${locale}/home`}>
             <Image
               src={"/statics/svgs/logo.svg"}
-              width={140}
-              height={140}
+              width={scrolled ? 80 : 140}
+              height={scrolled ? 80 : 140}
               alt="logo"
+              className="transition-all duration-300"
             />
           </Link>
           <div className="flex justify-center items-center gap-[10px] min-[1024px]:justify-end max-[1440px]:hidden">

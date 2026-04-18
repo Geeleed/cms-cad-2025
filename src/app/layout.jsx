@@ -78,15 +78,9 @@ export default function RootLayout({ children }) {
             <AntdProvider>
             <AdminSessionProvider>
             {/* <ResponsiveAppBar /> */}
+            <Navbar />
             <div className="w-dvw overflow-x-hidden">
-              <Navbar />
               {children}
-              <Link
-                href={"#nav"}
-                className="fixed right-8 bottom-8 size-[3rem] flex justify-center items-center rounded-md bg-(--neutral-100) hover:bg-(--c) transition-all cursor-pointer shadow text-[2rem] text-(--c) hover:text-(--neutral-100)"
-              >
-                <IconUp />
-              </Link>
               {/* <Footer /> */}
             </div>
             </AdminSessionProvider>
