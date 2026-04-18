@@ -1,5 +1,6 @@
 import { load_page_doctor } from "@/api/loadData";
 import FadeInWrapper from "@/components/FadeInWrapper";
+import InlineSectionEdit from "@/components/admin/InlineSectionEdit";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -7,6 +8,7 @@ import React from "react";
 export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }) {
+  const { locale } = await params;
   const page_doctor = await load_page_doctor({ params });
   const d = page_doctor.resource;
   if (!d?.child) return null;
@@ -23,6 +25,7 @@ export default async function Page({ params }) {
   const faq = d.child.find((el) => el.label === "faq");
   const contact = d.child.find((el) => el.label === "contact");
   return (
+    <InlineSectionEdit resourceType="page_doctor" resourceName={`page_doctor_${locale}`} label="หน้าแพทย์">
     <div className="page-doctor">
       <div className="max-w-[1250px] mx-auto flex flex-col px-[2rem]">
         <div className="mt-[8rem]">
@@ -220,5 +223,6 @@ export default async function Page({ params }) {
         </div>
       </div>
     </div>
+    </InlineSectionEdit>
   );
 }

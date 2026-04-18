@@ -8,10 +8,12 @@ export const dynamic = 'force-dynamic';
 import FadeInWrapper from "@/components/FadeInWrapper";
 import ContainerSection from "./components/ContainerSection";
 import { load_page_approaches } from "@/api/loadData";
+import InlineSectionEdit from "@/components/admin/InlineSectionEdit";
 
 export default async function page({ params }) {
   // const approach = await getApproach();
   // const d = approach.en;
+  const { locale } = await params;
   const page_approaches = await load_page_approaches({ params });
   const d = page_approaches.resource;
   if (!d?.child) return null;
@@ -20,6 +22,7 @@ export default async function page({ params }) {
   let [teaching, table] = a_p3.child;
   const references = sec_c.child.find((el) => el.label === "references");
   return (
+    <InlineSectionEdit resourceType="page_approaches" resourceName={`page_approaches_${locale}`} label="หน้าแนวทาง">
     <div className="page-approaches">
       <div className="max-w-[1250px] mx-auto">
         <div className="mt-[8rem] mb-[1rem]">
@@ -271,5 +274,6 @@ export default async function page({ params }) {
         </ContainerSection>
       </div>
     </div>
+    </InlineSectionEdit>
   );
 }
