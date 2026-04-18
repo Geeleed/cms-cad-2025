@@ -79,6 +79,14 @@ export default function ArticleAdminPage() {
         v ? new Date(v).toLocaleDateString("th-TH", { dateStyle: "medium" }) : "-",
     },
     {
+      title: "วันที่แก้ไข",
+      dataIndex: "updated_at",
+      key: "updated_at",
+      width: 160,
+      render: (v) =>
+        v ? new Date(v).toLocaleDateString("th-TH", { dateStyle: "medium" }) : "-",
+    },
+    {
       title: "จัดการ",
       key: "actions",
       width: 120,

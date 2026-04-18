@@ -38,3 +38,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Database Schema (schema: `cadcenter`)
+
+### `cad__resource`
+| Column | Type |
+|---|---|
+| id_resource | integer (PK) |
+| resource_type | text |
+| name | text |
+| remark | text |
+| resource | jsonb |
+
+### `news`
+| Column | Type |
+|---|---|
+| id | integer (PK) |
+| img_src | text |
+| title | text |
+| date | text |
+| href | text |
+
+### `articles`
+| Column | Type |
+|---|---|
+| id_article | integer (PK) |
+| title | text |
+| description | text |
+| content | text |
+| created_at | timestamptz |
+| updated_at | timestamptz |

@@ -24,6 +24,7 @@ function IconComp({ icon }) {
 }
 
 function buildHref(icon, link) {
+  if (!link) return "#";
   if (icon === "email") return `mailto:${link}`;
   if (icon === "tel")   return `tel:${link}`;
   return link;
