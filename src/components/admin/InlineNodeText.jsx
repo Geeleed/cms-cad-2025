@@ -3,38 +3,54 @@ import useAdminSession from "@/hooks/useAdminSession";
 import { Button, Input, Popover, message } from "antd";
 import { useState } from "react";
 
-/** Get a nested value by dot-notation path: "card.0.h3" */
-function getByPath(obj, path) {
-  return path.split(".").reduce((acc, k) => acc?.[k], obj);
+/** Deep-search a node by id in a nested tree (nodes have .id, .child[]) */
+function findNodeById(node, targetId) {
+  if (node.id === targetId) return node;
+  if (Array.isArray(node.child)) {
+    for (const c of node.child) {
+      const found = findNodeById(c, targetId);
+      if (found) return found;
+    }
+  }
+  return null;
 }
 
-/** Return a deep-cloned object with the nested value at dot-path replaced */
-function setByPath(obj, path, value) {
-  const clone = JSON.parse(JSON.stringify(obj));
-  const keys = path.split(".");
-  let cur = clone;
-  for (let i = 0; i < keys.length - 1; i++) {
-    cur = cur[keys[i]];
+/** Deep-clone and update a node's content by id */
+function updateNodeById(resource, targetId, newContent) {
+  const clone = JSON.parse(JSON.stringify(resource));
+
+  function walk(node) {
+    if (node.id === targetId) {
+      node.content = newContent;
+      return true;
+    }
+    if (Array.isArray(node.child)) {
+      for (const c of node.child) {
+        if (walk(c)) return true;
+      }
+    }
+    return false;
   }
-  cur[keys[keys.length - 1]] = value;
+
+  walk(clone);
   return clone;
 }
 
 /**
- * InlineText — renders a text value that admins can click to edit in-place.
+ * InlineNodeText — inline edit for tree-based resources (approaches, doctor, etc.)
  *
  * Props:
- *   value         – the current text value
+ *   value         – current text value
+ *   nodeId        – the node's unique id inside the resource tree
  *   resourceType  – cad__resource.resource_type
  *   resourceName  – cad__resource.name
- *   fieldKey      – dot-notation path inside resource JSON  e.g. "h2", "card.0.h3"
- *   multiline     – use TextArea instead of Input (default false)
+ *   multiline     – use TextArea (default false)
  */
-export default function InlineText({
+export default function InlineNodeText({
   value,
+  nodeId,
   resourceType,
   resourceName,
-  fieldKey,
   multiline = true,
 }) {
   const { isAdmin, loading } = useAdminSession();
@@ -43,7 +59,6 @@ export default function InlineText({
   const [saving, setSaving] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  // Non-admin or still loading auth — render plain text to avoid layout shifts
   if (loading || !isAdmin) return <>{value}</>;
 
   const handleSave = async () => {
@@ -54,7 +69,7 @@ export default function InlineText({
       );
       if (!getRes.ok) throw new Error("fetch");
       const row = await getRes.json();
-      const updatedResource = setByPath(row.resource, fieldKey, draft);
+      const updatedResource = updateNodeById(row.resource, nodeId, draft);
       const putRes = await fetch(`/api/admin/resource/${row.id_resource}`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
@@ -91,10 +106,7 @@ export default function InlineText({
       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
         <Button
           size="small"
-          onClick={() => {
-            setOpen(false);
-            setDraft(value ?? "");
-          }}
+          onClick={() => { setOpen(false); setDraft(value ?? ""); }}
           disabled={saving}
         >
           ยกเลิก

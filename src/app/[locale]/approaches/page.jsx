@@ -1,6 +1,4 @@
 import React from "react";
-import En from "./En";
-import { getApproach } from "@/api/fetcher";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,11 +6,9 @@ export const dynamic = 'force-dynamic';
 import FadeInWrapper from "@/components/FadeInWrapper";
 import ContainerSection from "./components/ContainerSection";
 import { load_page_approaches } from "@/api/loadData";
-import InlineSectionEdit from "@/components/admin/InlineSectionEdit";
+import InlineNodeText from "@/components/admin/InlineNodeText";
 
 export default async function page({ params }) {
-  // const approach = await getApproach();
-  // const d = approach.en;
   const { locale } = await params;
   const page_approaches = await load_page_approaches({ params });
   const d = page_approaches.resource;
@@ -21,13 +17,15 @@ export default async function page({ params }) {
   let [a_p1, a_p2, a_p3, a_p4] = sec_a.child;
   let [teaching, table] = a_p3.child;
   const references = sec_c.child.find((el) => el.label === "references");
+  const rt = "page_approaches";
+  const rn = `page_approaches_${locale}`;
+  const N = (node) => <InlineNodeText value={node.content} nodeId={node.id} resourceType={rt} resourceName={rn} />;
   return (
-    <InlineSectionEdit resourceType="page_approaches" resourceName={`page_approaches_${locale}`} label="หน้าแนวทาง">
     <div className="page-approaches">
       <div className="max-w-[1250px] mx-auto">
         <div className="mt-[8rem] mb-[1rem]">
           <FadeInWrapper>
-            <h1>{d.content}</h1>
+            <h1><N {...d} /></h1>
           </FadeInWrapper>
         </div>
         <FadeInWrapper>
@@ -44,16 +42,16 @@ export default async function page({ params }) {
         </FadeInWrapper>
 
         <ContainerSection>
-          <h2>{sec_a.content}</h2>
-          <p>{a_p1.content}</p>
+          <h2><N {...sec_a} /></h2>
+          <p><N {...a_p1} /></p>
           <ul>
             {a_p1.child.map((el) => (
               <li key={el.id}>
-                <div>{el.content}</div>
+                <div><N {...el} /></div>
                 {(el?.child || []).length > 0 && (
                   <ul>
                     {(el?.child || []).map((el2) => (
-                      <li key={el2.id}>{el2.content}</li>
+                      <li key={el2.id}><N {...el2} /></li>
                     ))}
                   </ul>
                 )}
@@ -63,15 +61,15 @@ export default async function page({ params }) {
         </ContainerSection>
 
         <ContainerSection>
-          <p>{a_p2.content}</p>
+          <p><N {...a_p2} /></p>
           <ul>
             {a_p2.child.map((el) => (
               <li key={el.id}>
-                <div>{el.content}</div>
+                <div><N {...el} /></div>
                 {(el?.child || []).length > 0 && (
                   <ul>
                     {(el?.child || []).map((el2) => (
-                      <li key={el2.id}>{el2.content}</li>
+                      <li key={el2.id}><N {...el2} /></li>
                     ))}
                   </ul>
                 )}
@@ -81,12 +79,12 @@ export default async function page({ params }) {
         </ContainerSection>
 
         <ContainerSection>
-          <h3>{a_p3.content}</h3>
-          <p>{teaching.content}</p>
+          <h3><N {...a_p3} /></h3>
+          <p><N {...teaching} /></p>
           <ul>
             {teaching.child.map((el) => (
               <div key={el.id}>
-                <li>{el.content}</li>
+                <li><N {...el} /></li>
               </div>
             ))}
           </ul>
@@ -99,7 +97,7 @@ export default async function page({ params }) {
               <div className="border border-(--neutral-300)">
                 <div className="grid grid-cols-4 font-bold text-center py-2 bg-(--a22)">
                   {table.content_table.header.map((el) => (
-                    <div key={el.id}>{el.content}</div>
+                    <div key={el.id}><N {...el} /></div>
                   ))}
                 </div>
                 <div>
@@ -110,7 +108,7 @@ export default async function page({ params }) {
                           key={el2.id}
                           className="p-4 border border-(--neutral-300)"
                         >
-                          {el2.content}
+                          <N {...el2} />
                         </div>
                       ))}
                     </div>
@@ -122,17 +120,17 @@ export default async function page({ params }) {
         </FadeInWrapper>
 
         <ContainerSection>
-          <h3>{a_p4.content}</h3>
-          <p>{a_p4.child[0].content}</p>
+          <h3><N {...a_p4} /></h3>
+          <p><N {...a_p4.child[0]} /></p>
           <ul>
             {a_p4.child[0].child.map((el) => (
               <div key={el.id}>
-                <li>{el.content}</li>
+                <li><N {...el} /></li>
                 {(el?.child || []).length > 0 && (
                   <ul>
                     {el.child.map((el2) => (
                       <div key={el2.id}>
-                        <li>{el2.content}</li>
+                        <li><N {...el2} /></li>
                       </div>
                     ))}
                   </ul>
@@ -143,16 +141,16 @@ export default async function page({ params }) {
         </ContainerSection>
 
         <ContainerSection>
-          <p>{a_p4.child[1].content}</p>
+          <p><N {...a_p4.child[1]} /></p>
           <ul>
             {a_p4.child[1].child.map((el) => (
               <div key={el.id}>
-                <li>{el.content}</li>
+                <li><N {...el} /></li>
                 {(el?.child || []).length > 0 && (
                   <ul>
                     {el.child.map((el2) => (
                       <div key={el2.id}>
-                        <li>{el2.content}</li>
+                        <li><N {...el2} /></li>
                       </div>
                     ))}
                   </ul>
@@ -163,23 +161,23 @@ export default async function page({ params }) {
         </ContainerSection>
 
         <ContainerSection>
-          <p>{a_p4.child[2].content}</p>
+          <p><N {...a_p4.child[2]} /></p>
         </ContainerSection>
 
         <br />
 
         <ContainerSection>
           <div className="flex">
-            <p className="font-bold mr-4">{a_p4.child[3].content}:</p>
+            <p className="font-bold mr-4"><N {...a_p4.child[3]} />:</p>
             {a_p4.child[3].child.map((el) => (
-              <p key={el.id}>{el.content}</p>
+              <p key={el.id}><N {...el} /></p>
             ))}
           </div>
         </ContainerSection>
 
         <ContainerSection>
           <div className="flex">
-            <p className="font-bold mr-4">{a_p4.child[4].content}:</p>
+            <p className="font-bold mr-4"><N {...a_p4.child[4]} />:</p>
             <div className="flex gap-x-4 flex-wrap">
               {a_p4.child[4].child.map((el) => (
                 <Link
@@ -197,38 +195,38 @@ export default async function page({ params }) {
 
         {/* section B */}
         <ContainerSection>
-          <h2>{sec_b.content}</h2>
-          <p>{sec_b.child[0].content}</p>
+          <h2><N {...sec_b} /></h2>
+          <p><N {...sec_b.child[0]} /></p>
         </ContainerSection>
 
         <ContainerSection>
-          <p>{sec_b.child[1].content}</p>
+          <p><N {...sec_b.child[1]} /></p>
           <ul>
             {sec_b.child[1].child.map((el) => (
               <div key={el.id}>
-                <li>{el.content}</li>
+                <li><N {...el} /></li>
               </div>
             ))}
           </ul>
         </ContainerSection>
 
         <ContainerSection>
-          <p>{sec_b.child[2].content}</p>
+          <p><N {...sec_b.child[2]} /></p>
         </ContainerSection>
 
         <ContainerSection>
-          <h3>{sec_b.child[3].content}</h3>
-          <p>{sec_b.child[3].child[0].content}</p>
-          <p className="font-semibold">{sec_b.child[3].child[1].content}</p>
+          <h3><N {...sec_b.child[3]} /></h3>
+          <p><N {...sec_b.child[3].child[0]} /></p>
+          <p className="font-semibold"><N {...sec_b.child[3].child[1]} /></p>
           <div className="key-strategies">
             {sec_b.child[3].child[1].child.map((el) => (
               <div key={el.id} className="pl-6">
-                <p className="font-semibold">{el.content}</p>
+                <p className="font-semibold"><N {...el} /></p>
                 {(el?.child || []).length > 0 && (
                   <ul>
                     {el.child.map((el2) => (
                       <div key={el2.id}>
-                        <li style={{ marginBottom: 0 }}>{el2.content}</li>
+                        <li style={{ marginBottom: 0 }}><N {...el2} /></li>
                       </div>
                     ))}
                   </ul>
@@ -239,22 +237,22 @@ export default async function page({ params }) {
         </ContainerSection>
 
         <ContainerSection>
-          <h2>{sec_c.content}</h2>
+          <h2><N {...sec_c} /></h2>
           <p>
-            <i>{sec_c.child[0].content}</i>
+            <i><N {...sec_c.child[0]} /></i>
           </p>
-          <p>{sec_c.child[1].content}</p>
-          <p>{sec_c.child[2].content}</p>
+          <p><N {...sec_c.child[1]} /></p>
+          <p><N {...sec_c.child[2]} /></p>
         </ContainerSection>
 
         {sec_c.child.slice(3, -1).map((el) => (
           <ContainerSection key={el.id}>
             <div>
-              <h3>{el.content}</h3>
+              <h3><N {...el} /></h3>
               <div>
                 {el.child.map((el2) => (
                   <div key={el2.id}>
-                    <p>{el2.content}</p>
+                    <p><N {...el2} /></p>
                   </div>
                 ))}
               </div>
@@ -263,17 +261,17 @@ export default async function page({ params }) {
         ))}
 
         <ContainerSection>
-          <h3>{references.content}</h3>
+          <h3><N {...references} /></h3>
           <ol>
             {references.child.map((el) => (
               <div key={el.id}>
-                <li>{el.content}</li>
+                <li><N {...el} /></li>
               </div>
             ))}
           </ol>
         </ContainerSection>
       </div>
     </div>
-    </InlineSectionEdit>
   );
 }
+
