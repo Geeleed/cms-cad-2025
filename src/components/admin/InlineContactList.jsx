@@ -4,7 +4,8 @@ import IconCall from "@/components/icons/IconCall";
 import IconFacebook from "@/components/icons/IconFacebook";
 import IconLine from "@/components/icons/IconLine";
 import IconMail from "@/components/icons/IconMail";
-import { Button, Input, Popover, Select, message } from "antd";
+import { Button, Input, Popover, Select } from "antd";
+import { message } from "@/lib/message";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

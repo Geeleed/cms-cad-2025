@@ -1,6 +1,7 @@
 "use client";
 import useAdminSession from "@/hooks/useAdminSession";
-import { Button, Input, Popover, message } from "antd";
+import { Button, Input, Popover } from "antd";
+import { message } from "@/lib/message";
 import { useState } from "react";
 
 /** Deep-search a node by id in a nested tree (nodes have .id, .child[]) */
@@ -15,13 +16,20 @@ function findNodeById(node, targetId) {
   return null;
 }
 
-/** Deep-clone and update a node's content by id */
-function updateNodeById(resource, targetId, newContent) {
+/** Deep-clone and update a node's content (or a nested field within content) by id */
+function updateNodeById(resource, targetId, newContent, contentField = null) {
   const clone = JSON.parse(JSON.stringify(resource));
 
   function walk(node) {
     if (node.id === targetId) {
-      node.content = newContent;
+      if (contentField) {
+        const keys = contentField.split(".");
+        let cur = node.content;
+        for (let i = 0; i < keys.length - 1; i++) cur = cur[keys[i]];
+        cur[keys[keys.length - 1]] = newContent;
+      } else {
+        node.content = newContent;
+      }
       return true;
     }
     if (Array.isArray(node.child)) {
@@ -52,6 +60,7 @@ export default function InlineNodeText({
   resourceType,
   resourceName,
   multiline = true,
+  contentField = null,
 }) {
   const { isAdmin, loading } = useAdminSession();
   const [open, setOpen] = useState(false);
@@ -69,7 +78,7 @@ export default function InlineNodeText({
       );
       if (!getRes.ok) throw new Error("fetch");
       const row = await getRes.json();
-      const updatedResource = updateNodeById(row.resource, nodeId, draft);
+      const updatedResource = updateNodeById(row.resource, nodeId, draft, contentField);
       const putRes = await fetch(`/api/admin/resource/${row.id_resource}`, {
         method: "PUT",
         headers: { "content-type": "application/json" },

@@ -8,8 +8,8 @@ import {
   Space,
   Typography,
   Tag,
-  message,
 } from "antd";
+import { message } from "@/lib/message";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;

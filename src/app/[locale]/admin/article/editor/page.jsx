@@ -3,7 +3,8 @@ import { postArticle } from "@/api/fetcher";
 import ArticleToolbar from "@/components/admin/ArticleToolbar";
 import useBlogger from "@/hooks/useBlogger";
 import { convert_rgba_to_hex } from "@/utils/pure_function";
-import { Button, Input, Modal, message } from "antd";
+import { Button, Input, Modal } from "antd";
+import { message } from "@/lib/message";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 

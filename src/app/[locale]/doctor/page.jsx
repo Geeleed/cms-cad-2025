@@ -1,6 +1,6 @@
 import { load_page_doctor } from "@/api/loadData";
 import FadeInWrapper from "@/components/FadeInWrapper";
-import InlineSectionEdit from "@/components/admin/InlineSectionEdit";
+import InlineNodeText from "@/components/admin/InlineNodeText";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -16,7 +16,7 @@ export default async function Page({ params }) {
     .content.src_image;
   const src_image_doctor = d.child.find((el) => el.content.name === "doctor")
     .content.src_image;
-  const intro = d.child.find((el) => el.label === "intro").content;
+  const introNode = d.child.find((el) => el.label === "intro");
   const about = d.child.find((el) => el.label === "about");
   const services = d.child.find((el) => el.label === "services");
   const appointments = d.child.find((el) => el.label === "appointments");
@@ -24,13 +24,15 @@ export default async function Page({ params }) {
   const courses = d.child.find((el) => el.label === "courses");
   const faq = d.child.find((el) => el.label === "faq");
   const contact = d.child.find((el) => el.label === "contact");
+  const rt = "page_doctor";
+  const rn = `page_doctor_${locale}`;
+  const N = (node) => <InlineNodeText value={node.content} nodeId={node.id} resourceType={rt} resourceName={rn} />;
   return (
-    <InlineSectionEdit resourceType="page_doctor" resourceName={`page_doctor_${locale}`} label="หน้าแพทย์">
     <div className="page-doctor">
       <div className="max-w-[1250px] mx-auto flex flex-col px-[2rem]">
         <div className="mt-[8rem]">
           <FadeInWrapper>
-            <h1>{d.content}</h1>
+            <h1><N {...d} /></h1>
           </FadeInWrapper>
         </div>
 
@@ -58,40 +60,40 @@ export default async function Page({ params }) {
                   alt="image doctor"
                 />
               </figure>
-              <p className="col-span-3">{intro}</p>
+              <p className="col-span-3"><N {...introNode} /></p>
             </section>
           </FadeInWrapper>
 
           <section>
             <FadeInWrapper>
-              <h2>{about.content}</h2>
+              <h2><N {...about} /></h2>
             </FadeInWrapper>
             {about.child.map((el) => (
               <FadeInWrapper key={el.id}>
-                <p className="mb-4">{el.content}</p>
+                <p className="mb-4"><N {...el} /></p>
               </FadeInWrapper>
             ))}
           </section>
 
           <section>
             <FadeInWrapper>
-              <h2>{services.content}</h2>
+              <h2><N {...services} /></h2>
             </FadeInWrapper>
             <FadeInWrapper>
               <p>
-                <i>{services.child[0].content}</i>
+                <i><N {...services.child[0]} /></i>
               </p>
             </FadeInWrapper>
             <FadeInWrapper>
-              <p>{services.child[1].content}</p>
+              <p><N {...services.child[1]} /></p>
             </FadeInWrapper>
             <FadeInWrapper>
-              <p>{services.child[2].content}</p>
+              <p><N {...services.child[2]} /></p>
             </FadeInWrapper>
             <ul className="mt-4">
               {services.child[2].child.map((el) => (
                 <FadeInWrapper key={el.id}>
-                  <li>{el.content}</li>
+                  <li><N {...el} /></li>
                 </FadeInWrapper>
               ))}
             </ul>
@@ -99,12 +101,12 @@ export default async function Page({ params }) {
 
           <section>
             <FadeInWrapper>
-              <h2>{appointments.content}</h2>
+              <h2><N {...appointments} /></h2>
             </FadeInWrapper>
             <div className="pl-6">
               {appointments.child.map((el) => (
                 <FadeInWrapper key={el.id}>
-                  <p className="mb-4">{el.content}</p>
+                  <p className="mb-4"><N {...el} /></p>
                 </FadeInWrapper>
               ))}
             </div>
@@ -112,19 +114,17 @@ export default async function Page({ params }) {
 
           <section>
             <FadeInWrapper>
-              <h2>{service_fee.content}</h2>
+              <h2><N {...service_fee} /></h2>
             </FadeInWrapper>
             <div className="pl-2 max-[450px]:pl-0">
               {service_fee.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <div className="flex justify-between hover:bg-(--c11) px-4 max-[450px]:px-0 py-2 rounded-4xl transform-all">
-                    <p className="max-[450px]:w-1/2">{el.content.name}</p>
+                    <p className="max-[450px]:w-1/2">
+                      <InlineNodeText value={el.content.name} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="name" multiline={false} />
+                    </p>
                     <p className="max-[450px]:w-1/2 max-[450px]:text-right">
-                      {el.content.price.min !== el.content.price.max
-                        ? `${el.content.price.min} - ${el.content.price.max} ${el.content.price.currency}`
-                        : `${
-                            el.content.price.min || el.content.price.min || 0
-                          } ${el.content.price.currency}`}
+                      <InlineNodeText value={el.content.price} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="price" multiline={false} />
                     </p>
                   </div>
                 </FadeInWrapper>
@@ -134,19 +134,17 @@ export default async function Page({ params }) {
 
           <section>
             <FadeInWrapper>
-              <h2>{courses.content}</h2>
+              <h2><N {...courses} /></h2>
             </FadeInWrapper>
             <div className="pl-2 max-[450px]:pl-0">
               {courses.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <div className="flex justify-between hover:bg-(--c11) px-4 max-[450px]:px-0 py-2 rounded-4xl transform-all">
-                    <p className="max-[450px]:w-1/2">{el.content.name}</p>
+                    <p className="max-[450px]:w-1/2">
+                      <InlineNodeText value={el.content.name} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="name" multiline={false} />
+                    </p>
                     <p className="max-[450px]:w-1/2 text-right">
-                      {el.content.price.min !== el.content.price.max
-                        ? `${el.content.price.min} - ${el.content.price.max} ${el.content.price.currency}`
-                        : `${
-                            el.content.price.min || el.content.price.min || 0
-                          } ${el.content.price.currency}`}
+                      <InlineNodeText value={el.content.price} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="price" multiline={false} />
                     </p>
                   </div>
                 </FadeInWrapper>
@@ -156,17 +154,17 @@ export default async function Page({ params }) {
 
           <section>
             <FadeInWrapper>
-              <h2>{faq.content}</h2>
+              <h2><N {...faq} /></h2>
             </FadeInWrapper>
             <div className="pl-6 max-[450px]:pl-0">
               {faq.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <details className="mb-4">
                     <summary className="font-semibold cursor-pointer hover-pink">
-                      {el.content.q}
+                      <InlineNodeText value={el.content.q} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="q" />
                     </summary>
                     <p className="pl-6" style={{ fontSize: "0.9rem" }}>
-                      {el.content.a}
+                      <InlineNodeText value={el.content.a} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="a" />
                     </p>
                   </details>
                 </FadeInWrapper>
@@ -176,21 +174,21 @@ export default async function Page({ params }) {
 
           <section className="card max-[450px]:hidden">
             <FadeInWrapper>
-              <h2>{contact.content}</h2>
+              <h2><N {...contact} /></h2>
             </FadeInWrapper>
             <div>
               {contact.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <div className="flex gap-2 hover:underline underline-offset-8 hover:text-(--c) w-fit transition-all duration-300">
                     <p className="font-semibold mb-4">
-                      {el.content.contact_type}:
+                      <InlineNodeText value={el.content.contact_type} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="contact_type" multiline={false} />:
                     </p>
                     <Link
                       href={el.content.href}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {el.content.contact}
+                      <InlineNodeText value={el.content.contact} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="contact" multiline={false} />
                     </Link>
                   </div>
                 </FadeInWrapper>
@@ -199,21 +197,21 @@ export default async function Page({ params }) {
           </section>
           <section className="max-[450px]:block hidden">
             <FadeInWrapper>
-              <h2>{contact.content}</h2>
+              <h2><N {...contact} /></h2>
             </FadeInWrapper>
             <div>
               {contact.child.map((el) => (
                 <FadeInWrapper key={el.id}>
                   <div className="flex gap-2 hover:underline underline-offset-8 hover:text-(--c) w-fit transition-all duration-300">
                     <p className="font-semibold mb-4">
-                      {el.content.contact_type}:
+                      <InlineNodeText value={el.content.contact_type} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="contact_type" multiline={false} />:
                     </p>
                     <Link
                       href={el.content.href}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {el.content.contact}
+                      <InlineNodeText value={el.content.contact} nodeId={el.id} resourceType={rt} resourceName={rn} contentField="contact" multiline={false} />
                     </Link>
                   </div>
                 </FadeInWrapper>
@@ -223,6 +221,5 @@ export default async function Page({ params }) {
         </div>
       </div>
     </div>
-    </InlineSectionEdit>
   );
 }

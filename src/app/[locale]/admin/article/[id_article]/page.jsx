@@ -2,7 +2,8 @@
 import ArticleToolbar from "@/components/admin/ArticleToolbar";
 import useBlogger from "@/hooks/useBlogger";
 import { convert_rgba_to_hex } from "@/utils/pure_function";
-import { Button, Input, Modal, Spin, message } from "antd";
+import { Button, Input, Modal, Spin } from "antd";
+import { message } from "@/lib/message";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

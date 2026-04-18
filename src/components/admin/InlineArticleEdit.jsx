@@ -3,7 +3,8 @@ import ArticleToolbar from "@/components/admin/ArticleToolbar";
 import useBlogger from "@/hooks/useBlogger";
 import useAdminSession from "@/hooks/useAdminSession";
 import { convert_rgba_to_hex } from "@/utils/pure_function";
-import { Button, Input, Spin, message } from "antd";
+import { Button, Input, Spin } from "antd";
+import { message } from "@/lib/message";
 import React, { useEffect, useState } from "react";
 
 export default function InlineArticleEdit({

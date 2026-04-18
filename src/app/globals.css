@@ -111,6 +111,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Reset antd link color injection */
+a,
+a:hover,
+a:visited,
+a:active {
+  color: inherit;
+}
+
 body {
   color: var(--text);
   font-size: 18px;

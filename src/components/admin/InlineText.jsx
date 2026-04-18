@@ -1,6 +1,7 @@
 "use client";
 import useAdminSession from "@/hooks/useAdminSession";
-import { Button, Input, Popover, message } from "antd";
+import { Button, Input, Popover } from "antd";
+import { message } from "@/lib/message";
 import { useState } from "react";
 
 /** Get a nested value by dot-notation path: "card.0.h3" */

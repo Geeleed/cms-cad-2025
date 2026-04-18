@@ -1,6 +1,7 @@
 "use client";
 import useAdminSession from "@/hooks/useAdminSession";
-import { Button, Popover, message } from "antd";
+import { Button, Popover } from "antd";
+import { message } from "@/lib/message";
 import { useRef, useState } from "react";
 
 function fileToBase64(file) {

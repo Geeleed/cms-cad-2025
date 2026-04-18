@@ -1,7 +1,8 @@
 "use client";
 import ResourceFields from "@/components/admin/ResourceFields";
 import useAdminSession from "@/hooks/useAdminSession";
-import { Button, Drawer, Spin, message } from "antd";
+import { Button, Drawer, Spin } from "antd";
+import { message } from "@/lib/message";
 import { EditOutlined } from "@ant-design/icons";
 import dynamic from "next/dynamic";
 import React, { useState, useRef } from "react";
