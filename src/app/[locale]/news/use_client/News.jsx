@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import FadeInWrapper from "@/components/FadeInWrapper";
 import { getNews } from "@/api/fetcher";
 import { CardNews } from "../components/CardNews";
+import InlineText from "@/components/admin/InlineText";
 
-export default function News({title="News"}) {
+export default function News({ title = "News", resourceType, resourceName }) {
   const [news, setNews] = useState([]);
   const init = async () => {
     const temp = await getNews();
@@ -16,7 +17,7 @@ export default function News({title="News"}) {
   return (
     <div className="max-w-[1250px] mx-auto">
       <div className="mt-[8rem] mb-[1rem]">
-        <h1>{title}</h1>
+        <h1><InlineText value={title} resourceType={resourceType} resourceName={resourceName} fieldKey="title" /></h1>
       </div>
       <div className="grid grid-cols-3 max-[1025px]:grid-cols-2 max-[821px]:grid-cols-1 gap-4 max-w-[1250px] mx-auto">
         {news.map((el, index) => (

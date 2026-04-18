@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Tag, Typography, Button, Input, Spin } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Tag, Typography, Button, Input, Spin, Tooltip } from "antd";
+import { EditOutlined, LinkOutlined } from "@ant-design/icons";
 import { useRouter, usePathname } from "next/navigation";
 
 const TYPE_ORDER = [
@@ -17,7 +17,7 @@ const TYPE_ORDER = [
 ];
 
 // Types managed in the dedicated Team page — excluded here
-const TEAM_TYPES = new Set(["page_team", "page_doctor"]);
+const TEAM_TYPES = new Set(["page_team", "page_doctor", "page_content"]);
 
 const TYPE_LABELS = {
   page_landing: { label: "Landing", color: "blue" },
@@ -31,7 +31,29 @@ const TYPE_LABELS = {
   resource_video: { label: "Video", color: "volcano" },
 };
 
-// Strip _en / _th suffix to get base name for pairing
+// Human-readable descriptions per resource type
+const TYPE_DESCRIPTIONS = {
+  page_landing: "เนื้อหาหน้าหลัก (Home) ทุก section",
+  page_about: "หน้า About — ประวัติและรายละเอียดองค์กร",
+  page_services: "หน้า Services — รายการบริการ",
+  page_approaches: "หน้า Approaches — แนวทางการรักษา",
+  page_resources: "หน้า Resources — บทความและวิดีโอ",
+  page_news: "หน้า News — ข่าวสาร",
+  page_content: "เนื้อหาทั่วไป",
+  value_setting: "ค่าตั้งต้นของระบบ (สี, ค่าต่างๆ)",
+  resource_video: "วิดีโอที่แสดงในหน้าเว็บ",
+};
+
+// Page preview links per resource_type
+const TYPE_PAGE_LINKS = {
+  page_landing: (locale) => `/${locale}/home`,
+  page_about: (locale) => `/${locale}/about`,
+  page_services: (locale) => `/${locale}/services`,
+  page_approaches: (locale) => `/${locale}/approaches`,
+  page_resources: (locale) => `/${locale}/resources`,
+  page_news: (locale) => `/${locale}/news`,
+};
+
 function getBaseName(name) {
   if (!name) return null;
   return name.replace(/_(en|th)$/, "");
@@ -43,7 +65,6 @@ function getLang(name) {
   return m ? m[1] : null;
 }
 
-// Pair rows that differ only by _en / _th suffix
 function pairRows(rows) {
   const map = {};
   const unpaired = [];
@@ -57,12 +78,13 @@ function pairRows(rows) {
       unpaired.push(row);
     }
   }
-  // Merge: pairs first (sorted by base name), then unpaired
   const paired = Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
   return { paired, unpaired };
 }
 
 function PairedRow({ base, langs, onEdit }) {
+  const displayName = base.replace(/^(page_landing|page_about|page_services|page_approaches|page_resources|page_news|page_content|value_setting|resource_video)_?/, "");
+  const label = displayName || base;
   return (
     <div
       style={{
@@ -72,16 +94,24 @@ function PairedRow({ base, langs, onEdit }) {
         padding: "10px 16px",
         background: "#fff",
         borderBottom: "1px solid #f5f5f5",
+        gap: 8,
       }}
     >
-      <span style={{ fontWeight: 500 }}>{base}</span>
-      <Button
-        size="small"
-        icon={<EditOutlined />}
-        onClick={() => onEdit(langs["th"]?.id_resource ?? langs["en"]?.id_resource)}
-      >
-        แก้ไข
-      </Button>
+      <span style={{ fontWeight: 500, flex: 1, fontSize: 13, color: "#444" }}>{label}</span>
+      <div style={{ display: "flex", gap: 6 }}>
+        {["th", "en"].map((lang) =>
+          langs[lang] ? (
+            <Button
+              key={lang}
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => onEdit(langs[lang].id_resource)}
+            >
+              {lang.toUpperCase()}
+            </Button>
+          ) : null
+        )}
+      </div>
     </div>
   );
 }
@@ -108,7 +138,6 @@ export default function ResourceListPage() {
         r.resource_type.toLowerCase().includes(search.toLowerCase()))
   );
 
-  // Group by resource_type, sorted by TYPE_ORDER
   const grouped = filtered.reduce((acc, row) => {
     if (!acc[row.resource_type]) acc[row.resource_type] = [];
     acc[row.resource_type].push(row);
@@ -126,9 +155,12 @@ export default function ResourceListPage() {
 
   return (
     <div>
-      <Typography.Title level={4} style={{ marginBottom: 16 }}>
+      <Typography.Title level={4} style={{ marginBottom: 4 }}>
         จัดการเนื้อหาหน้าเว็บ
       </Typography.Title>
+      <Typography.Text type="secondary" style={{ display: "block", marginBottom: 20, fontSize: 13 }}>
+        คลิกปุ่ม TH / EN เพื่อแก้ไขเนื้อหาแต่ละภาษา
+      </Typography.Text>
       <Input.Search
         placeholder="ค้นหา..."
         onChange={(e) => setSearch(e.target.value)}
@@ -144,16 +176,36 @@ export default function ResourceListPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           {sortedGroupEntries.map(([type, rows]) => {
             const t = TYPE_LABELS[type];
+            const desc = TYPE_DESCRIPTIONS[type];
+            const pageLink = TYPE_PAGE_LINKS[type]?.(locale);
             const { paired, unpaired } = pairRows(rows);
             const totalItems = paired.length + unpaired.length;
             return (
               <div key={type}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
                   <Tag color={t?.color ?? "default"} style={{ fontSize: 13, padding: "2px 10px" }}>
                     {t?.label ?? type}
                   </Tag>
-                  <span style={{ color: "#aaa", fontSize: 13 }}>{totalItems} รายการ</span>
+                  {pageLink && (
+                    <Tooltip title="ดูหน้านี้บนเว็บไซต์">
+                      <Button
+                        type="link"
+                        size="small"
+                        icon={<LinkOutlined />}
+                        href={pageLink}
+                        target="_blank"
+                        style={{ padding: 0, fontSize: 12 }}
+                      >
+                        ดูหน้าจริง
+                      </Button>
+                    </Tooltip>
+                  )}
                 </div>
+                {desc && (
+                  <Typography.Text type="secondary" style={{ display: "block", fontSize: 12, marginBottom: 8 }}>
+                    {desc}
+                  </Typography.Text>
+                )}
                 <div style={{ display: "flex", flexDirection: "column", gap: 1, borderRadius: 8, overflow: "hidden", border: "1px solid #f0f0f0" }}>
                   {paired.map(([base, langs]) => (
                     <PairedRow
@@ -173,6 +225,7 @@ export default function ResourceListPage() {
                         padding: "10px 16px",
                         background: "#fff",
                         borderBottom: "1px solid #f5f5f5",
+                        gap: 8,
                       }}
                     >
                       <div>

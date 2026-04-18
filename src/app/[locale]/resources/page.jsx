@@ -7,6 +7,7 @@ import Video from "./use_client/Video";
 export const dynamic = 'force-dynamic';
 import Article from "./use_client/Article";
 import { load_page_resources, load_system_word } from "@/api/loadData";
+import InlineText from "@/components/admin/InlineText";
 
 export default async function Page({ params }) {
   // const v = await getVideoWithRevalidate({ revalidate: 360 });
@@ -19,7 +20,7 @@ export default async function Page({ params }) {
     <div className="page-resources">
       <div className="max-w-[1250px] mx-auto">
         <div className="mt-[8rem] mb-[1rem]">
-          <h1>{system_word.resource.resources}</h1>
+          <h1><InlineText value={page_resources.resource?.title ?? system_word.resource.resources} resourceType="page_resources" resourceName={`page_resources_${locale}`} fieldKey="title" /></h1>
         </div>
         {/* <section>
           <h2>{educational_videos}</h2>
@@ -33,13 +34,19 @@ export default async function Page({ params }) {
         </section> */}
         <section>
           <Article
-            title={system_word.resource.articles}
+            title={page_resources.resource?.articles_title ?? system_word.resource.articles}
             locale={locale}
             dictionary={dictionary}
+            resourceType="page_resources"
+            resourceName={`page_resources_${locale}`}
           />
         </section>
         <section>
-          <Video title={system_word.resource.educational_videos} />
+          <Video
+            title={page_resources.resource?.videos_title ?? system_word.resource.educational_videos}
+            resourceType="page_resources"
+            resourceName={`page_resources_${locale}`}
+          />
         </section>
       </div>
     </div>
