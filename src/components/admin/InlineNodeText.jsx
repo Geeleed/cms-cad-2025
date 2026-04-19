@@ -61,6 +61,7 @@ export default function InlineNodeText({
   resourceName,
   multiline = true,
   contentField = null,
+  label,
 }) {
   const { isAdmin, loading } = useAdminSession();
   const [open, setOpen] = useState(false);
@@ -154,7 +155,9 @@ export default function InlineNodeText({
         onClick={(e) => e.stopPropagation()}
         title="คลิกเพื่อแก้ไข"
       >
-        {value}
+        {label !== undefined ? (
+          <span style={{ opacity: 0.5, fontSize: "0.75em", fontStyle: "italic" }}>[{label || "ลิงก์"}]</span>
+        ) : value}
       </span>
     </Popover>
   );

@@ -13,37 +13,47 @@ function fileToBase64(file) {
   });
 }
 
-function getByPath(obj, path) {
-  return path.split(".").reduce((acc, k) => acc?.[k], obj);
-}
-
-function setByPath(obj, path, value) {
-  const clone = JSON.parse(JSON.stringify(obj));
-  const keys = path.split(".");
-  let cur = clone;
-  for (let i = 0; i < keys.length - 1; i++) {
-    cur = cur[keys[i]];
+function updateNodeById(resource, targetId, newValue, contentField) {
+  const clone = JSON.parse(JSON.stringify(resource));
+  function walk(node) {
+    if (node.id === targetId) {
+      if (contentField) {
+        const keys = contentField.split(".");
+        let cur = node.content;
+        for (let i = 0; i < keys.length - 1; i++) cur = cur[keys[i]];
+        cur[keys[keys.length - 1]] = newValue;
+      } else {
+        node.content = newValue;
+      }
+      return true;
+    }
+    if (Array.isArray(node.child)) {
+      for (const c of node.child) if (walk(c)) return true;
+    }
+    return false;
   }
-  cur[keys[keys.length - 1]] = value;
+  walk(clone);
   return clone;
 }
 
 /**
- * InlineImage — wraps a image element so admins can click to replace the image URL.
+ * InlineNodeImage — wraps an image element for tree-based resources (doctor, etc.)
  *
  * Props:
- *   children      – the <Image /> or <img /> element to render
- *   value         – current image src URL
+ *   children      – the <Image /> element to render
+ *   value         – current image src
+ *   nodeId        – the node's id in the resource tree
+ *   contentField  – dot-notation field inside node.content e.g. "src_image"
  *   resourceType  – cad__resource.resource_type
  *   resourceName  – cad__resource.name
- *   fieldKey      – dot-notation path inside resource JSON e.g. "img"
  */
-export default function InlineImage({
+export default function InlineNodeImage({
   children,
   value,
+  nodeId,
+  contentField,
   resourceType,
   resourceName,
-  fieldKey,
 }) {
   const { isAdmin, loading } = useAdminSession();
   const [open, setOpen] = useState(false);
@@ -62,7 +72,7 @@ export default function InlineImage({
       );
       if (!getRes.ok) throw new Error("fetch");
       const row = await getRes.json();
-      const updatedResource = setByPath(row.resource, fieldKey, draft);
+      const updatedResource = updateNodeById(row.resource, nodeId, draft, contentField);
       const putRes = await fetch(`/api/admin/resource/${row.id_resource}`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
@@ -131,12 +141,7 @@ export default function InlineImage({
         onMouseLeave={() => setHovered(false)}
         onClick={(e) => e.stopPropagation()}
         title="คลิกเพื่อเปลี่ยนรูป"
-        style={{
-          cursor: "pointer",
-          position: "relative",
-          display: "inline-block",
-          width: "100%",
-        }}
+        style={{ cursor: "pointer", position: "relative", display: "inline-block", width: "100%" }}
       >
         {children}
         {(hovered || open) && (

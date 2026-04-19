@@ -7,6 +7,7 @@ import FadeInWrapper from "@/components/FadeInWrapper";
 import ContainerSection from "./components/ContainerSection";
 import { load_page_approaches } from "@/api/loadData";
 import InlineNodeText from "@/components/admin/InlineNodeText";
+import InlineImage from "@/components/admin/InlineImage";
 
 export default async function page({ params }) {
   const { locale } = await params;
@@ -31,12 +32,14 @@ export default async function page({ params }) {
         <FadeInWrapper>
           <div>
             <figure className="rounded-4xl overflow-hidden">
-              <Image
-                src={"/statics/images/stock/8.jpg"}
-                width={1250}
-                height={1250}
-                alt={d.content}
-              />
+              <InlineImage value={d.src_image ?? "/statics/images/stock/8.jpg"} resourceType={rt} resourceName={rn} fieldKey="src_image">
+                <Image
+                  src={d.src_image ?? "/statics/images/stock/8.jpg"}
+                  width={1250}
+                  height={1250}
+                  alt={d.content}
+                />
+              </InlineImage>
             </figure>
           </div>
         </FadeInWrapper>
