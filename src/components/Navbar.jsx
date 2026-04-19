@@ -52,7 +52,7 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -162,14 +162,14 @@ export default function Navbar() {
               {dict?.contact}
             </Link>
           </div>
-          <div className="max-[1440px]:flex hidden items-center gap-8">
-            <Link className="button-primary" href={"#contact"}>
+          <div className="max-[1440px]:flex hidden items-center gap-4">
+            <Link className="button-primary !py-3 !px-5 !text-sm !rounded-xl" href={"#contact"}>
               {/* Contact */}
               {dict?.contact}
             </Link>
             <div
               onClick={() => setIsOpenNavPage(true)}
-              className="scale-[2] -translate-x-2"
+              className="cursor-pointer flex items-center justify-center"
             >
               <IconList />
             </div>
@@ -179,7 +179,7 @@ export default function Navbar() {
       {isOpenNavPage === true && (
         <div
           onClick={() => setIsOpenNavPage(false)}
-          className="fixed top-0 left-0 w-dvw h-screen bg-(--neutral-400) z-50 flex flex-col items-center text-[2rem] font-bold pt-8 px-4 pb-4 *:hover:text-(--c) *:hover:underline"
+          className="fixed top-0 left-0 w-dvw h-screen bg-(--neutral-400) z-[200] flex flex-col items-center text-[2rem] font-bold pt-8 px-4 pb-4 *:hover:text-(--c) *:hover:underline"
         >
           <Link className="nav-link" href={`/${locale}/home`}>
             {/* Home */}

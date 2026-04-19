@@ -16,8 +16,8 @@ export default async function Page({ params }) {
   }
 
   return (
-    <main className="py-[8rem]">
-      <div className="max-w-[1250px] mx-auto w-full">
+    <main className="py-[4rem] min-[1024px]:py-[8rem]">
+      <div className="max-w-[1250px] mx-auto w-full px-4 min-[700px]:px-8 min-[1440px]:px-0">
         <InlineArticleEdit
           id_article={id_article}
           initialTitle={result.title}
