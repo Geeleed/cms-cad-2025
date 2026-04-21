@@ -95,7 +95,7 @@ export default function ArticleEditPage() {
   return (
     <div className="max-w-[900px] w-full mx-auto pb-[4rem]">
       {/* Header */}
-      <div className="mt-[2rem] mb-[1.5rem]" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <div className="mt-[2rem] mb-[1.5rem]" style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
         <Button onClick={() => router.push(`/${locale}/admin/article`)}>← กลับ</Button>
         <h1 style={{ margin: 0 }}>แก้ไขบทความ</h1>
       </div>

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
-  Table, Button, Modal, Form, Input, Space, Typography, Popconfirm, Alert,
+  Button, Modal, Form, Input, Typography, Popconfirm, Alert, Skeleton, Empty,
 } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, LinkOutlined, CalendarOutlined } from "@ant-design/icons";
 
 export default function NewsPage() {
   const [data, setData] = useState([]);
@@ -80,59 +80,100 @@ export default function NewsPage() {
     }
   };
 
-  const columns = [
-    {
-      title: "รูป",
-      dataIndex: "img_src",
-      render: (src) =>
-        src ? (
-          <img src={src} alt="" style={{ width: 80, height: 50, objectFit: "cover", borderRadius: 4 }} />
-        ) : "-",
-      width: 100,
-    },
-    { title: "หัวข้อข่าว", dataIndex: "title", ellipsis: true },
-    { title: "วันที่", dataIndex: "date", width: 180 },
-    {
-      title: "ลิงก์",
-      dataIndex: "href",
-      render: (h) => (
-        <a href={h} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>
-          {h?.slice(0, 40)}...
-        </a>
-      ),
-    },
-    {
-      title: "",
-      key: "action",
-      width: 120,
-      render: (_, record) => (
-        <Space>
-          <Button size="small" icon={<EditOutlined />} onClick={() => openEdit(record)} />
-          <Popconfirm
-            title="ลบข่าวนี้?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="ลบ"
-            cancelText="ยกเลิก"
-          >
-            <Button size="small" danger icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
-
   return (
     <div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 16 }}>
-        <Typography.Title level={4} style={{ margin: 0 }}>
-          จัดการข่าว
-        </Typography.Title>
-        <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 20 }}>
+        <Typography.Title level={4} style={{ margin: 0 }}>จัดการข่าว</Typography.Title>
+        <Button type="primary" icon={<PlusOutlined />} onClick={openCreate} style={{ borderRadius: 8 }}>
           เพิ่มข่าว
         </Button>
       </div>
 
-      <Table rowKey="id" columns={columns} dataSource={data} loading={loading} pagination={{ pageSize: 10 }} scroll={{ x: 600 }} />
+      {loading ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {[1, 2, 3].map((k) => (
+            <div key={k} style={{ background: "#fff", border: "1px solid #f0f0f0", borderRadius: 12, padding: "16px 20px", display: "flex", gap: 16 }}>
+              <div style={{ width: 100, height: 66, borderRadius: 8, background: "#f5f5f5", flexShrink: 0 }} />
+              <Skeleton active paragraph={{ rows: 1 }} />
+            </div>
+          ))}
+        </div>
+      ) : data.length === 0 ? (
+        <Empty description="ยังไม่มีข่าว" />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {data.map((record) => (
+            <div
+              key={record.id}
+              style={{
+                background: "#fff",
+                border: "1px solid #f0f0f0",
+                borderRadius: 12,
+                padding: "12px 16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                transition: "box-shadow 0.2s",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+            >
+              {/* Top row: thumbnail + title */}
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                {record.img_src ? (
+                  <img
+                    src={record.img_src}
+                    alt=""
+                    style={{ width: 80, height: 54, objectFit: "cover", borderRadius: 8, flexShrink: 0 }}
+                  />
+                ) : (
+                  <div style={{ width: 80, height: 54, borderRadius: 8, background: "#f5f5f5", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#ccc", fontSize: 20 }}>
+                    📰
+                  </div>
+                )}
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {record.title}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom row: meta + buttons */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", minWidth: 0, overflow: "hidden" }}>
+                  {record.date && (
+                    <span style={{ fontSize: 12, color: "#bbb", display: "flex", alignItems: "center", gap: 3, whiteSpace: "nowrap" }}>
+                      <CalendarOutlined style={{ flexShrink: 0 }} /> {record.date}
+                    </span>
+                  )}
+                  {record.href && (
+                    <a
+                      href={record.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ fontSize: 12, color: "#1677ff", display: "flex", alignItems: "center", gap: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 220 }}
+                    >
+                      <LinkOutlined style={{ flexShrink: 0 }} /> {record.href}
+                    </a>
+                  )}
+                </div>
+                <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                  <Button size="small" icon={<EditOutlined />} onClick={() => openEdit(record)} style={{ borderRadius: 8 }}>แก้ไข</Button>
+                  <Popconfirm
+                    title="ลบข่าวนี้?"
+                    onConfirm={() => handleDelete(record.id)}
+                    okText="ลบ"
+                    cancelText="ยกเลิก"
+                  >
+                    <Button size="small" danger icon={<DeleteOutlined />} style={{ borderRadius: 8 }} />
+                  </Popconfirm>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <Modal
         open={modalOpen}
